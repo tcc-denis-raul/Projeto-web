@@ -1,0 +1,45 @@
+{% extends "app/base.html" %}
+{% load staticfiles %}
+
+{% block menu_content %}
+<section class="caption">
+	<div class="row">
+	    <h1 class="mean_cap">Encontre o Curso</hA>
+	    <h2 class="sub_cap">Ideal para voce!</h2>
+	    
+	    <a href="" class="button round index"><span>Descubra rapidamente</span></a>
+    </div>
+</section>
+{% endblock %}
+
+{% block content %}        
+<section class="services" id="services">
+	<div class="row">
+		<h1 class="mean_title">Com Paloma a dificuldade acabou</h1>
+	    <h2 class="sub_title">Descubra qual é o melhor curso para você</h2>
+    </div>
+    <div class="row services_list">
+        <div class="small-12 medium-3 large-3 columns">
+            <img src="{% static 'app/img/icon2.png' %}" alt="" title="" class="serv_icon" />
+            <h2 class="title">Personalizado</h2>
+            <p>O Paloma foi feito especialmente para você! Através de simples perguntas, conseguimos descobrir suas necessidades e adequar o melhor curso.</p>
+        </div>
+        <div class="small-12 medium-3 large-3 columns">
+            <img src="{% static 'app/img/icon1.png' %}" alt="" title="" class="serv_icon" />
+            <h2 class="title">Interativo</h2>
+            <p>Converse no nosso fórum, troque ideias e tire dúvidas. Sincronize com o facebook e veja o que seus amigos estão aprendendo.</p>
+        </div>
+        <div class="small-12 medium-3 large-3 columns">
+            <img src="{% static 'app/img/icon3.png' %}" alt="" title="" class="serv_icon" />
+            <h2 class="title">Integrado</h2>
+            <p>Não está aprendendo o quanto queria? Acha que seu curso poderia ter novas funcionalidade? O Paloma é o melhor lugar para expor suas críticas e sugestóes, por ser um ponto de encontro de TODOS os cursos da WEB</p>
+        </div>
+        <div class="small-12 medium-3 large-3 columns">
+            <img src="{% static 'app/img/icon4.png' %}" alt="" title="" class="serv_icon" />
+            <h2 class="title">Divertido</h2>
+            <p>Aprender se divertindo é a melhor coisa! Crie seu perfil de aluno e suba de níveis através de ações como sugerir um novo curso e ajudar algum outro aluno. Quanto mais ativo mais você sobe e pode virar até professor!</p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
