@@ -6,28 +6,6 @@ $(document).ready(function(){
 
 
 
-	/*  carousel Init    */
-	$('#carousel').carouFredSel({
-	 	width : '670',
-	 	pagination  : ".pagination",
-	 	responsive : true,
-	 	scroll :{
-	 		fx : 'fade'
-	 	},
-	 	items :{
-	 		visible : 1,
-	 		width : '670'
-	 	},
-		swipe: {
-			onMouse: true,
-			onTouch: true
-		}
-    });
-
-
-
-
-
 	/*    Mean navigation menu scroll to    */
     $('#mean_nav ul li a').click(function(e){
     	e.preventDefault();
