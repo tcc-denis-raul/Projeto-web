@@ -1,7 +1,9 @@
 {% extends 'app/base.html' %}
 
-{% block content %}
-{% for i in courses %}
-<div>{{ i.name }} </div>
-{%endfor%}
+
+{% block menu_content %}
+{% for course in courses %}
+<a> {{ course.Name }}</a>
+{% endfor %}
+
 {% endblock %}

@@ -45,7 +45,7 @@
                 </div>
             </header>
             
-
+            {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
             {% block menu_content %}
             {% endblock %}
         </section>
@@ -65,13 +65,15 @@
                     type: 'GET',
                     success: function(data) {
                         types_courses = $.parseJSON(data);
-                        console.log(types_courses)
-                        for( type in types_courses){
-                            for(var i = 0; i < types_courses[type].length; i++) {
-                                var url = '/app/courses/' + type + '/' + types_courses[type][i]
-                                $('#dropdown').append('<li><a href="'+url+'">' + types_courses[type][i] + '</a></li>')
-                            }
-                        }                    
+                        for (var ind = 0; ind < types_courses.length; ind++){
+                            for( type in types_courses[ind]){
+                                for(var i = 0; i < types_courses[ind][type].length; i++) {
+                                    var url = '/app/courses/' + type.toLowerCase() + '/' + types_courses[ind][type][i]
+                                    $('#dropdown').append('<li><a href="'+url+'">' + types_courses[ind][type][i] + '</a></li>')
+                                }
+                            }    
+                        }
+                        
                     }
                 });
             });

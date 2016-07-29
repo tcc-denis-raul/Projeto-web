@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
+import requests
 
 from django.views.generic import TemplateView, View
 from django.http import JsonResponse
 
+from app import settings
 # Create your views here.
 
 
@@ -18,38 +20,26 @@ class SurveyView(TemplateView):
 class CoursesView(TemplateView):
     template_name = 'app/courses.html'
 
-    # TODO: fazer request para api
-    # endereco: courses/language/course
-    # method: get
-    # envia a typ e course
-    # return: lista json com todos os cursos para a language e o curso (ex. language/ingles)
     def get_context_data(self, **kwargs):
         typ = self.kwargs['type']
         course = self.kwargs['course']
-        print typ
-        print course
-        return_example = [
-            {
-                "preco-dolar": [0],
-                "url": "https://www.duolingo.com/pt",
-                "based": ["exemplo", "exercicio_interativo"],
-                "name": "Duolingo",
-                "extra": ["comunicacao_alunos"],
-                "dinamica": ["curso_livre"],
-                "preco_real": [0],
-                "plataforma": ["android_online", "ios_online"],
-                "descricao": "preecher"
+        url = '{}/courses?type={}&course={}'.format(settings.PALOMA_HOST, typ, course)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {
+                'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)
             }
-        ]
-        return {'courses': return_example}
+
+        return {'courses': response.json()}
 
 
 class TypesCoursesView(View):
 
-    # TODO: fazer o request para a api
-    # endereço: /types/courses
-    # method: get
-    # return: json
     def get(self, request, *args, **kwargs):
-        types_courses = {'language': ['ingles']}
-        return JsonResponse(json.dumps(types_courses), safe=False)
+        url = '{}/types/courses'.format(settings.PALOMA_HOST)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {
+                'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)
+            }
+        return JsonResponse(json.dumps(response.json()), safe=False)
