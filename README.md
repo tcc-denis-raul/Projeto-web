@@ -33,8 +33,7 @@ Executando:
 ===========
 
 - Configure as váriaves ambiente:
-	- PALOMA_HOST: host da api do tcc, default: localhost
-	- PALOMA_PORT: porta da api do tcc, default: 5000
+	- PALOMA: host:port da api do tcc, default: localhost:5000
 
 - Make run
 
