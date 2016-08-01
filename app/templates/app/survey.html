@@ -1,1 +1,9 @@
-{{ form }}
+{% extends 'app/base.html' %}
+
+
+{% block menu_content %}
+{% for question in questions %}
+<a> {{ questions }}</a>
+{% endfor %}
+
+{% endblock %}

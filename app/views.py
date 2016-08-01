@@ -16,6 +16,17 @@ class IndexView(TemplateView):
 class SurveyView(TemplateView):
     template_name = 'app/survey.html'
 
+    def get_context_data(self, **kwargs):
+        typ = self.kwargs['type']
+        url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, typ)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {
+                'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)
+            }
+
+        return {'questions': response.json()}
+
 
 class CoursesView(TemplateView):
     template_name = 'app/courses.html'
