@@ -1,10 +1,10 @@
 from django import forms
 
 
-class NameForm(forms.Form):
+class SurveyForm(forms.Form):
     def __init__(self, prices, based, platforms,
                  dynamic, extra, *args, **kwargs):
-        super(NameForm, self).__init__(*args, **kwargs)
+        super(SurveyForm, self).__init__(*args, **kwargs)
         self.fields['Price'].choices = prices
         self.fields['Based'].choices = based
         self.fields['Platform'].choices = platforms

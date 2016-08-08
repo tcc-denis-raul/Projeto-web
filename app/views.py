@@ -6,7 +6,7 @@ from django.views.generic import TemplateView, View
 from django.http import JsonResponse
 
 from app import settings
-from .forms import NameForm
+from .forms import SurveyForm
 # Create your views here.
 
 
@@ -33,14 +33,14 @@ class SurveyView(TemplateView):
                 .format(response.status_code)
             }
 
-        foo = NameForm(
+        form = SurveyForm(
             self.gera_list(response.json()[0]['Price']),
             self.gera_list(response.json()[0]['Based']),
             self.gera_list(response.json()[0]['Platform']),
             self.gera_list(response.json()[0]['Dynamic']),
             self.gera_list(response.json()[0]['Extra'])
         )
-        return {'questions': response.json(), 'form': foo}
+        return {'form': form}
 
 
 class CoursesView(TemplateView):
