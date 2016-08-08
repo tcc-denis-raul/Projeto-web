@@ -6,6 +6,7 @@ from django.views.generic import TemplateView, View
 from django.http import JsonResponse
 
 from app import settings
+from .forms import NameForm
 # Create your views here.
 
 
@@ -16,16 +17,30 @@ class IndexView(TemplateView):
 class SurveyView(TemplateView):
     template_name = 'app/survey.html'
 
+    def gera_list(self, value):
+        list = []
+        for i in value:
+            list.append((i.keys()[0], i.values()[0], ))
+        return list
+
     def get_context_data(self, **kwargs):
         typ = self.kwargs['type']
         url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, typ)
         response = requests.get(url)
         if response.status_code != 200:
             return {
-                'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)
+                'error_message': 'Algo aconteceu errado: status code: {}'
+                .format(response.status_code)
             }
 
-        return {'questions': response.json()}
+        foo = NameForm(
+            self.gera_list(response.json()[0]['Price']),
+            self.gera_list(response.json()[0]['Based']),
+            self.gera_list(response.json()[0]['Platform']),
+            self.gera_list(response.json()[0]['Dynamic']),
+            self.gera_list(response.json()[0]['Extra'])
+        )
+        return {'questions': response.json(), 'form': foo}
 
 
 class CoursesView(TemplateView):
@@ -35,10 +50,12 @@ class CoursesView(TemplateView):
         typ = self.kwargs['type']
         course = self.kwargs['course']
         url = '{}/courses?type={}&course={}'.format(settings.PALOMA_HOST, typ, course)
+
         response = requests.get(url)
         if response.status_code != 200:
             return {
-                'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)
+                'error_message': 'Algo aconteceu errado: status code: {}'
+                .format(response.status_code)
             }
 
         return {'courses': response.json()}
@@ -51,6 +68,7 @@ class TypesCoursesView(View):
         response = requests.get(url)
         if response.status_code != 200:
             return {
-                'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)
+                'error_message': 'Algo aconteceu errado: status code: {}'
+                .format(response.status_code)
             }
         return JsonResponse(json.dumps(response.json()), safe=False)
