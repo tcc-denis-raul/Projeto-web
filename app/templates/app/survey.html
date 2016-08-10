@@ -2,11 +2,7 @@
 
 
 {% block menu_content %}
-{% for question in questions %}
-<a> {{ questions }}</a>
-{% endfor %}
-
-<form action="{% url 'app:index' %}" method='post'>
+<form action="{% url 'app:result_survey' type 'ingles' %}" method='post'>
     {% csrf_token %}
     {{ form.as_p }}
     <input type='submit' value='submit'>

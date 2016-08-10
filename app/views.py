@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 import json
 import requests
+import urllib
 
 from django.views.generic import TemplateView, View
 from django.http import JsonResponse
+from django.shortcuts import render
 
 from app import settings
 from .forms import SurveyForm
@@ -40,7 +42,7 @@ class SurveyView(TemplateView):
             self.gera_list(response.json()[0]['Dynamic']),
             self.gera_list(response.json()[0]['Extra'])
         )
-        return {'form': form}
+        return {'form': form, 'type': typ}
 
 
 class CoursesView(TemplateView):
@@ -59,6 +61,29 @@ class CoursesView(TemplateView):
             }
 
         return {'courses': response.json()}
+
+
+class ResultSurveyView(View):
+    def post(self, request, *args, **kwargs):
+        data = {
+            "type": self.kwargs['type'],
+            "course": self.kwargs['course'],
+            "based": request.POST['Based'],
+            "extra": request.POST['Extra'],
+            "price": request.POST['Price'],
+            "dynamic": request.POST['Dynamic'],
+            "platform": request.POST['Platform'],
+            "length": 5
+        }
+        filter = urllib.urlencode(data)
+        url = '{}/courses?{}'.format(settings.PALOMA_HOST, filter)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {
+                'error_message': 'Algo aconteceu errado: status code: {}'
+                .format(response.status_code)
+            }
+        return render(request, 'app/courses.html', {'courses': response.json()})
 
 
 class TypesCoursesView(View):
