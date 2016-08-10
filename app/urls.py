@@ -9,5 +9,6 @@ urlpatterns = [
     url(r'^types/courses/$', views.TypesCoursesView.as_view(), name='types_courses'),
     url(r'^courses/(?P<type>[\w+]+)/(?P<course>[\w+]+)/$', views.CoursesView.as_view(), name='courses'),
     url(r'^survey/(?P<type>[\w+]+)/(?P<course>[\w+]+)/result/$', views.ResultSurveyView.as_view(), name='result_survey'),
-
+    url(r'^login/$', views.LoginView.as_view(), name='login'),
+    url(r'^signup/$', views.SignUpView.as_view(), name='signup'),
 ]

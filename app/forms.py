@@ -17,3 +17,13 @@ class SurveyForm(forms.Form):
     Dynamic = forms.ChoiceField(choices=(), required=True)
     Extra = forms.ChoiceField(choices=(), required=True)
 
+
+class UserFormLogin(forms.Form):
+    Email = forms.CharField(required=True, max_length=100, label="Email")
+    Password = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Password")
+
+class UserFormSignUp(forms.Form):
+    Email = forms.CharField(required=True, max_length=100, label="Email")
+    Name = forms.CharField(required=True, max_length=200, label="Name")
+    Password = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Password")
+    Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirm Password")

@@ -39,7 +39,12 @@
                                     <ul class="dropdown" id='dropdown'>
                                     </ul>
                                 </li>
+                                {% if not request.user.is_authenticated %}
+                                    <li><a href="{% url 'app:login' %}" data-reveal-id="login">Sign In</a></li>
+                                    <li><a href="{% url 'app:signup' %}" data-reveal-id="login">Sign Up</a></li>
+                                {% endif %}
                             </ul>
+
                         </section>
                     </nav>
                 </div>

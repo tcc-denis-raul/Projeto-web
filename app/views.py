@@ -9,6 +9,8 @@ from django.shortcuts import render
 
 from app import settings
 from .forms import SurveyForm
+from .forms import UserFormLogin
+from .forms import UserFormSignUp
 # Create your views here.
 
 
@@ -97,3 +99,15 @@ class TypesCoursesView(View):
                 .format(response.status_code)
             }
         return JsonResponse(json.dumps(response.json()), safe=False)
+
+
+class LoginView(View):
+    def get(self, request, *args, **kwargs):
+        form = UserFormLogin()
+        return render(request, 'app/login.html', {'form': form})
+
+
+class SignUpView(View):
+    def get(self, request, *args, **kwargs):
+        form = UserFormSignUp()
+        return render(request, 'app/login.html', {'form': form})
