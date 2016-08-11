@@ -11,4 +11,5 @@ urlpatterns = [
     url(r'^survey/(?P<type>[\w+]+)/(?P<course>[\w+]+)/result/$', views.ResultSurveyView.as_view(), name='result_survey'),
     url(r'^login/$', views.LoginView.as_view(), name='login'),
     url(r'^signup/$', views.SignUpView.as_view(), name='signup'),
+    url(r'^logout/$', views.LogOutView.as_view(), name='logout'),
 ]

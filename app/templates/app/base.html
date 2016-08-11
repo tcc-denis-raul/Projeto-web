@@ -40,8 +40,10 @@
                                     </ul>
                                 </li>
                                 {% if not request.user.is_authenticated %}
-                                    <li><a href="{% url 'app:login' %}" data-reveal-id="login">Sign In</a></li>
-                                    <li><a href="{% url 'app:signup' %}" data-reveal-id="login">Sign Up</a></li>
+                                    <li><a href="{% url 'app:login' %}" data-reveal-id="login">Entrar</a></li>
+                                    <li><a href="{% url 'app:signup' %}" data-reveal-id="login">Cadastrar</a></li>
+                                {% else %}
+                                    <li><a href="{% url 'app:logout' %}" data-reveal-id="login">Desconectar</a></li>
                                 {% endif %}
                             </ul>
 

@@ -4,6 +4,8 @@ import requests
 import urllib
 
 from django.views.generic import TemplateView, View
+from django.contrib.auth.models import User
+from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import render
 
@@ -81,10 +83,11 @@ class ResultSurveyView(View):
         url = '{}/courses?{}'.format(settings.PALOMA_HOST, filter)
         response = requests.get(url)
         if response.status_code != 200:
-            return {
-                'error_message': 'Algo aconteceu errado: status code: {}'
-                .format(response.status_code)
-            }
+            return render(
+                request,
+                'app/courses.html',
+                {'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)}
+            )
         return render(request, 'app/courses.html', {'courses': response.json()})
 
 
@@ -106,8 +109,44 @@ class LoginView(View):
         form = UserFormLogin()
         return render(request, 'app/login.html', {'form': form})
 
+    def post(self, request, *args, **kwargs):
+        email = request.POST['Email']
+        password = request.POST['Password']
+        user = authenticate(username=email, password=password)
+        if user is not None:
+            # the password verified for the user
+            if user.is_active:
+                login(request, user)
+            else:
+                print("The password is valid, but the account has been disabled!")
+        else:
+            # the authentication system was unable to verify the username and password
+            print("The username and password were incorrect.")
+
+        return render(request, 'app/index.html', {})
+
 
 class SignUpView(View):
     def get(self, request, *args, **kwargs):
         form = UserFormSignUp()
         return render(request, 'app/login.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        email = request.POST['Email']
+        name = request.POST['Name']
+        password = request.POST['Password']
+        confirm = request.POST['Confirm']
+        if confirm != password:
+            return render(
+                request,
+                "app/login.html",
+                {'error_message': 'Senhas não coicidem'}
+            )
+        user = User.objects.create_user(name, email, password)
+        user.save()
+        return render(request, 'app/login.html', {})
+
+class LogOutView(View):
+    def get(self, requests, *args, **kwargs):
+        logout(requests)
+        return render(requests, 'app/index.html', {})
