@@ -6,8 +6,8 @@ import urllib
 from django.views.generic import TemplateView, View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
-from django.shortcuts import render
+from django.http import JsonResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
 
 from app import settings
 from .forms import SurveyForm
@@ -118,10 +118,20 @@ class LoginView(View):
             if user.is_active:
                 login(request, user)
             else:
-                print("The password is valid, but the account has been disabled!")
+                return render(
+                    request,
+                    'app/login.html',
+                    {
+                        'form': UserFormLogin(),
+                        'alert_error': "Conta desabilitada. Entre em contato com o Administrador"
+                    }
+                )
         else:
-            # the authentication system was unable to verify the username and password
-            print("The username and password were incorrect.")
+            return render(
+                request,
+                'app/login.html',
+                {'form': UserFormLogin(), 'alert_error': "Usuário ou senha incorretos"}
+            )
 
         return render(request, 'app/index.html', {})
 
@@ -145,6 +155,7 @@ class SignUpView(View):
         user = User.objects.create_user(name, email, password)
         user.save()
         return render(request, 'app/login.html', {})
+
 
 class LogOutView(View):
     def get(self, requests, *args, **kwargs):

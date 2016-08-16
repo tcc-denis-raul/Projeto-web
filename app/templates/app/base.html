@@ -86,6 +86,14 @@
             });
         </script>
         {% block js %}
+        <script type="text/javascript">
+            {% if alert_error  %}
+                alert("{{ alert_error }}")
+            {% endif %}
+            {% if alert_message  %}
+                alert("{{ alert_message }}")
+            {% endif %}
+        </script>
         {% endblock %}
     </body>
 
