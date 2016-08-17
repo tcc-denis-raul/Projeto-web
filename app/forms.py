@@ -19,11 +19,19 @@ class SurveyForm(forms.Form):
 
 
 class UserFormLogin(forms.Form):
-    Email = forms.CharField(required=True, max_length=100, label="Email")
+    UserName = forms.CharField(required=True, max_length=100, label="Username")
     Password = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Password")
 
+
 class UserFormSignUp(forms.Form):
+    UserName = forms.CharField(required=True, max_length=100, label="Username")
     Email = forms.CharField(required=True, max_length=100, label="Email")
-    Name = forms.CharField(required=True, max_length=200, label="Name")
+    FirstName = forms.CharField(required=True, max_length=200, label="First Name")
+    LastName = forms.CharField(required=True, max_length=200, label="Last Name")
     Password = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Password")
+    Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirm Password")
+
+
+class UpdatePasswordForm(forms.Form):
+    NewPasswd = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="New Password")
     Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirm Password")

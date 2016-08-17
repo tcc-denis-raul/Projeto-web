@@ -10,9 +10,7 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from app import settings
-from .forms import SurveyForm
-from .forms import UserFormLogin
-from .forms import UserFormSignUp
+from .forms import SurveyForm, UserFormLogin, UserFormSignUp, UpdatePasswordForm
 # Create your views here.
 
 
@@ -110,9 +108,9 @@ class LoginView(View):
         return render(request, 'app/login.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
-        email = request.POST['Email']
+        userName = request.POST['UserName']
         password = request.POST['Password']
-        user = authenticate(username=email, password=password)
+        user = authenticate(username=userName, password=password)
         if user is not None:
             if user.is_active:
                 login(request, user)
@@ -142,23 +140,48 @@ class SignUpView(View):
         return render(request, 'app/login.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
+        userName = request.POST['UserName']
         email = request.POST['Email']
-        name = request.POST['Name']
+        firstName = request.POST['FirstName']
+        lastName = request.POST['LastName']
         password = request.POST['Password']
         confirm = request.POST['Confirm']
         if confirm != password:
             return render(
                 request,
                 "app/login.html",
-                {'error_message': 'Senhas não coicidem'}
+                {'alert_error': 'Senhas não coicidem'}
             )
-        user = User.objects.create_user(name, email, password)
+        user = User.objects.create_user(userName, email, password)
+        user.first_name = firstName
+        user.last_name = lastName
         user.save()
-        return render(request, 'app/login.html', {})
+        return render(request, 'app/index.html', {})
 
 
 # TODO: fazer request para api salvar o ultimo acesso
 class LogOutView(View):
-    def get(self, requests, *args, **kwargs):
-        logout(requests)
-        return render(requests, 'app/index.html', {})
+    def get(self, request, *args, **kwargs):
+        logout(request)
+        return render(request, 'app/index.html', {})
+
+
+class UpdatePasswordView(View):
+    def get(self, request, *args, **kwargs):
+        form = UpdatePasswordForm()
+        return render(request, 'app/login.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        username = request.user.username
+        newPasswd = request.POST['NewPasswd']
+        confirm = request.POST['Confirm']
+        if confirm != newPasswd:
+            return render(
+                request,
+                "app/login.html",
+                {'alert_error': 'Senhas não coicidem'}
+            )
+        u = User.objects.get(username=username)
+        u.set_password(newPasswd)
+        u.save()
+        return render(request, 'app/index.html', {})
