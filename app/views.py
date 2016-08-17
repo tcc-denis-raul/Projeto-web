@@ -105,7 +105,7 @@ class TypesCoursesView(View):
 class LoginView(View):
     def get(self, request, *args, **kwargs):
         form = UserFormLogin()
-        return render(request, 'app/login.html', {'form': form})
+        return render(request, 'app/form.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         userName = request.POST['UserName']
@@ -117,7 +117,7 @@ class LoginView(View):
             else:
                 return render(
                     request,
-                    'app/login.html',
+                    'app/form.html',
                     {
                         'form': UserFormLogin(),
                         'alert_error': "Conta desabilitada. Entre em contato com o Administrador"
@@ -126,7 +126,7 @@ class LoginView(View):
         else:
             return render(
                 request,
-                'app/login.html',
+                'app/form.html',
                 {'form': UserFormLogin(), 'alert_error': "Usuário ou senha incorretos"}
             )
 
@@ -137,7 +137,7 @@ class LoginView(View):
 class SignUpView(View):
     def get(self, request, *args, **kwargs):
         form = UserFormSignUp()
-        return render(request, 'app/login.html', {'form': form})
+        return render(request, 'app/form.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         userName = request.POST['UserName']
@@ -149,8 +149,8 @@ class SignUpView(View):
         if confirm != password:
             return render(
                 request,
-                "app/login.html",
-                {'alert_error': 'Senhas não coicidem'}
+                "app/form.html",
+                {'alert_error': 'Senhas não coicidem', 'form': UserFormSignUp()}
             )
         user = User.objects.create_user(userName, email, password)
         user.first_name = firstName
@@ -169,7 +169,7 @@ class LogOutView(View):
 class UpdatePasswordView(View):
     def get(self, request, *args, **kwargs):
         form = UpdatePasswordForm()
-        return render(request, 'app/login.html', {'form': form})
+        return render(request, 'app/form.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
         username = request.user.username
@@ -178,8 +178,8 @@ class UpdatePasswordView(View):
         if confirm != newPasswd:
             return render(
                 request,
-                "app/login.html",
-                {'alert_error': 'Senhas não coicidem'}
+                "app/form.html",
+                {'alert_error': 'Senhas não coicidem', 'form': UpdatePasswordForm()}
             )
         u = User.objects.get(username=username)
         u.set_password(newPasswd)
