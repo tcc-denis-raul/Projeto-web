@@ -40,10 +40,20 @@
                                     </ul>
                                 </li>
                                 {% if not request.user.is_authenticated %}
-                                    <li><a href="{% url 'app:login' %}" data-reveal-id="login">Entrar</a></li>
-                                    <li><a href="{% url 'app:signup' %}" data-reveal-id="login">Cadastrar</a></li>
+                                    <li><a href="{% url 'app:login' %}" data-reveal-id="login"> Entrar </a></li>
+                                    <li><a href="{% url 'app:signup' %}"> Cadastrar </a></li>
                                 {% else %}
-                                    <li><a href="{% url 'app:logout' %}" data-reveal-id="login">Desconectar</a></li>
+                                    <li class="has-dropdown">
+                                        <a href="#">{{ request.user.username }}</a>
+                                        <ul class="dropdown">
+                                            <li>
+                                                <li><a href="#">Meu Perfil</a></li>
+                                                <li><a href="#">Indicar cursos</a></li>
+                                                <li><a href="#">Mudar Senha</a></li>
+                                                <li><a href="{% url 'app:logout' %}">Desconectar</a></li>
+                                            </li>
+                                        </ul>
+                                    </li>   
                                 {% endif %}
                             </ul>
 
@@ -61,8 +71,8 @@
         {% endblock %}
         
         <!--    Javascript Files    -->
-        <script type="text/javascript" src="{% static 'app/js/jquery.js' %}"></script>
         <script type="text/javascript" src="{% static 'app/js/main.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/js/jquery.js' %}"></script>
         <script type="text/javascript" src="{% static 'app/js/foundation.min.js' %}"></script>
         <script type="text/javascript">
             $(document).ready(function(){

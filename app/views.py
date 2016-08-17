@@ -6,8 +6,8 @@ import urllib
 from django.views.generic import TemplateView, View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse, HttpResponseRedirect
-from django.shortcuts import render, redirect
+from django.http import JsonResponse
+from django.shortcuts import render
 
 from app import settings
 from .forms import SurveyForm
@@ -114,7 +114,6 @@ class LoginView(View):
         password = request.POST['Password']
         user = authenticate(username=email, password=password)
         if user is not None:
-            # the password verified for the user
             if user.is_active:
                 login(request, user)
             else:
@@ -136,6 +135,7 @@ class LoginView(View):
         return render(request, 'app/index.html', {})
 
 
+# TODO: Fazer request para o servidor guardar tais informações no banco de dados
 class SignUpView(View):
     def get(self, request, *args, **kwargs):
         form = UserFormSignUp()
@@ -157,6 +157,7 @@ class SignUpView(View):
         return render(request, 'app/login.html', {})
 
 
+# TODO: fazer request para api salvar o ultimo acesso
 class LogOutView(View):
     def get(self, requests, *args, **kwargs):
         logout(requests)
