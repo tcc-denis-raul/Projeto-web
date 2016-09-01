@@ -35,3 +35,14 @@ class UserFormSignUp(forms.Form):
 class UpdatePasswordForm(forms.Form):
     NewPasswd = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="New Password")
     Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirm Password")
+
+
+class IndicateCourseForm(forms.Form):
+    def __init__(self, types, courses, *args, **kwargs):
+        super(IndicateCourseForm, self).__init__(*args, **kwargs)
+        self.fields['Type'].choices = types
+        self.fields['Course'].choices = courses
+    Type = forms.ChoiceField(choices=(), required=True)
+    Course = forms.ChoiceField(choices=(), required=True)
+    Name = forms.CharField(max_length=355, required=True, label="Nome do curso")
+    Url = forms.CharField(max_length=355, required=True, label="Endereco do curso")

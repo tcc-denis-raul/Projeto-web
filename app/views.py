@@ -10,7 +10,8 @@ from django.http import JsonResponse
 from django.shortcuts import render
 
 from app import settings
-from .forms import SurveyForm, UserFormLogin, UserFormSignUp, UpdatePasswordForm
+from .forms import SurveyForm, UserFormLogin, UserFormSignUp, UpdatePasswordForm, IndicateCourseForm
+
 # Create your views here.
 
 
@@ -184,4 +185,30 @@ class UpdatePasswordView(View):
         u = User.objects.get(username=username)
         u.set_password(newPasswd)
         u.save()
+        return render(request, 'app/index.html', {})
+
+
+class IndicateCourseView(View):
+    def get(self, request, *args, **kwargs):
+        type = [('Language', 'Idiomas', )]
+        course = [('Ingles', 'Ingles', )]
+        form = IndicateCourseForm(type, course)
+        return render(request, 'app/form.html', {'form': form})
+
+    def post(self, request, *args, **kwargs):
+        data = {
+           "type": request.POST['Type'],
+            "course": request.POST['Course'],
+            "name": request.POST['Name'],
+            "url": request.POST['Url']
+        }
+        data_qr = urllib.urlencode(data)
+        url_req = "{}/indicate/course?{}".format(settings.PALOMA_HOST, data_qr) 
+        response = requests.post(url_req)
+        if response.status_code != 200:
+            return render(
+                request,
+                "app/index.html",
+                {'alert_error': 'Curso já cadastrado ou indicado'}
+            )
         return render(request, 'app/index.html', {})
