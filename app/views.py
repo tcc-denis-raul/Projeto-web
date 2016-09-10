@@ -30,6 +30,7 @@ class SurveyView(TemplateView):
 
     def get_context_data(self, **kwargs):
         typ = self.kwargs['type']
+        save = self.kwargs['save']
         url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, typ)
         response = requests.get(url)
         if response.status_code != 200:
@@ -45,7 +46,7 @@ class SurveyView(TemplateView):
             self.gera_list(response.json()[0]['Dynamic']),
             self.gera_list(response.json()[0]['Extra'])
         )
-        return {'form': form, 'type': typ}
+        return {'form': form, 'type': typ, 'save': save}
 
 
 class CoursesView(TemplateView):
@@ -78,6 +79,9 @@ class ResultSurveyView(View):
             "platform": request.POST['Platform'],
             "length": 5
         }
+        if request.GET['save'].lower() == "true":
+            # TODO: Send data to api, api store the data
+            print data
         filter = urllib.urlencode(data)
         url = '{}/courses?{}'.format(settings.PALOMA_HOST, filter)
         response = requests.get(url)
@@ -212,3 +216,10 @@ class IndicateCourseView(View):
                 {'alert_error': 'Curso já cadastrado ou indicado'}
             )
         return render(request, 'app/index.html', {})
+
+
+class ProfileView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'app/profile.html', {})
+
+

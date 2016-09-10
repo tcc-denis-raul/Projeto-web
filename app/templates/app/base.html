@@ -31,7 +31,7 @@
                             </li>
                             <span class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></span>
                         </ul>
-                       
+
                         <section class="top-bar-section" id="mean_nav">
                             <ul class="right">
                                 <li class="has-dropdown">
@@ -42,13 +42,23 @@
                                 {% if not request.user.is_authenticated %}
                                     <li><a href="{% url 'app:login' %}" data-reveal-id="login"> Entrar </a></li>
                                     <li><a href="{% url 'app:signup' %}"> Cadastrar </a></li>
-                                {% else %}
+								{% else %}
+									<li class="has-dropdown">
+										<a href="#">Meu perfil</a>
+										<ul class="dropdown">
+											<li>
+												<li><a href="{% url 'app:profile' %}">Profile</a></li>
+												<li><a href="{% url 'app:survey' 'language' 'true' %}">Caracteristicas</a></li>
+												<li><a href="">Cursos</a></li>
+												<li><a href="">Avaliar Cursos</a></li>
+											</li>
+										</ul>
+									</li>
                                     <li class="has-dropdown">
                                         <a href="#">{{ request.user.first_name }}</a>
                                         <ul class="dropdown">
                                             <li>
-                                                <li><a href="#"> Meu Perfil </a></li>
-												<li><a href="{% url 'app:indicate_course' %}"> Indicar cursos </a></li>
+                                               	<li><a href="{% url 'app:indicate_course' %}"> Indicar cursos </a></li>
                                                 <li><a href="{% url 'app:update_password' %}"> Mudar Senha</a></li>
                                                 <li><a href="{% url 'app:logout' %}"> Desconectar </a></li>
                                             </li>
