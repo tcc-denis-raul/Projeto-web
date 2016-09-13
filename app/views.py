@@ -22,31 +22,34 @@ class IndexView(TemplateView):
 class SurveyView(TemplateView):
     template_name = 'app/survey.html'
 
-    def gera_list(self, value):
+    def fmt_list(self, value):
         list = []
         for i in value:
             list.append((i.keys()[0], i.values()[0], ))
         return list
 
     def get_context_data(self, **kwargs):
-        typ = self.kwargs['type']
-        save = self.kwargs['save']
-        url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, typ)
+        context = {
+            'type': self.kwargs['type'],
+            'save': self.kwargs['save'],
+        }
+        url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, context['type'])
         response = requests.get(url)
         if response.status_code != 200:
+            # TODO: Tratar todos os erros possiveis: 
+            # ex.: 404 gerar pagina de 404 ...
             return {
                 'error_message': 'Algo aconteceu errado: status code: {}'
                 .format(response.status_code)
             }
-
-        form = SurveyForm(
-            self.gera_list(response.json()[0]['Price']),
-            self.gera_list(response.json()[0]['Based']),
-            self.gera_list(response.json()[0]['Platform']),
-            self.gera_list(response.json()[0]['Dynamic']),
-            self.gera_list(response.json()[0]['Extra'])
+        context['form'] = SurveyForm(
+            self.fmt_list(response.json()[0]['Price']),
+            self.fmt_list(response.json()[0]['Based']),
+            self.fmt_list(response.json()[0]['Platform']),
+            self.fmt_list(response.json()[0]['Dynamic']),
+            self.fmt_list(response.json()[0]['Extra'])
         )
-        return {'form': form, 'type': typ, 'save': save}
+        return {'context': context}
 
 
 class CoursesView(TemplateView):
@@ -59,6 +62,7 @@ class CoursesView(TemplateView):
 
         response = requests.get(url)
         if response.status_code != 200:
+            #TODO: Tratar todos os erros possiveis
             return {
                 'error_message': 'Algo aconteceu errado: status code: {}'
                 .format(response.status_code)

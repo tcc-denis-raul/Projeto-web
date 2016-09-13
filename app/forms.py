@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from django import forms
 
 
@@ -11,10 +12,10 @@ class SurveyForm(forms.Form):
         self.fields['Dynamic'].choices = dynamic
         self.fields['Extra'].choices = extra
 
-    Price = forms.ChoiceField(choices=(), required=True)
-    Based = forms.ChoiceField(choices=(), required=True)
-    Platform = forms.ChoiceField(choices=(), required=True)
-    Dynamic = forms.ChoiceField(choices=(), required=True)
+    Price = forms.ChoiceField(choices=(), required=True, label='Preço')
+    Based = forms.ChoiceField(choices=(), required=True, label="Baseado")
+    Platform = forms.ChoiceField(choices=(), required=True, label="Plataforma")
+    Dynamic = forms.ChoiceField(choices=(), required=True, label="Dinamica")
     Extra = forms.ChoiceField(choices=(), required=True)
 
 

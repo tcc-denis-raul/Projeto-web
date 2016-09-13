@@ -2,10 +2,10 @@
 
 
 {% block menu_content %}
-<form action="{% url 'app:result_survey' type 'ingles' %}?save={{save}}" method='post'>
+<form action="{% url 'app:result_survey' context.type 'ingles' %}?save={{context.save}}" method='post'>
     {% csrf_token %}
-    {{ form.as_p }}
-    <input type='submit' value='submit'>
+	{{ context.form.as_p }}
+    <input type='submit' value='Selecionar'>
 </form>
 
 {% endblock %}
