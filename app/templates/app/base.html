@@ -80,10 +80,13 @@
         {% endblock %}
         
         <!--    Javascript Files    -->
-        <script type="text/javascript" src="{% static 'app/js/main.js' %}"></script>
-        <script type="text/javascript" src="{% static 'app/js/jquery.js' %}"></script>
-        <script type="text/javascript" src="{% static 'app/js/foundation.min.js' %}"></script>
-        <script type="text/javascript">
+        <script type="text/javascript" src="{% static 'app/js/main.js' %}"></script>	
+		<script type="text/javascript" src="{% static 'app/js/jquery.js' %}"></script>
+		<script type="text/javascript" src="{% static 'app/js/foundation.min.js' %}"></script>
+		<script>
+			$(document).foundation();
+		</script>
+		<script type="text/javascript">
             $(document).ready(function(){
                 $.ajax({
                     url: '/app/types/courses/',

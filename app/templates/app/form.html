@@ -1,9 +1,19 @@
-{% extends 'app/base.html' %}
+{% extends 'app/index.html' %}
 
-{% block menu_content %}
-<form action="" method='post'>
-	{% csrf_token %}
-	{{ form.as_p }}
-	<input type='submit' value='submit'>
-</form>
+{% block reveal %}
+<div id="reveal" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle">
+	<form action="" method='post'>
+		{% csrf_token %}
+		{{ form.as_p }}
+		<input type='submit' value='submit'>
+	</form>
+	<a class="close-reveal-modal" id="revealclose" aria-label="Close">&#215;</a>
+</div>
 {% endblock %}
+
+{% block js %}
+<script type='text/javascript'> 
+	$('#reveal').foundation('reveal', 'open');
+</script>
+{% endblock %}
+

@@ -7,7 +7,7 @@ from django.views.generic import TemplateView, View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
 from app import settings
 from .forms import SurveyForm, UserFormLogin, UserFormSignUp, UpdatePasswordForm, IndicateCourseForm
@@ -165,7 +165,7 @@ class SignUpView(View):
         user.first_name = firstName
         user.last_name = lastName
         user.save()
-        return render(request, 'app/index.html', {})
+        return redirect('app:login')
 
 
 # TODO: fazer request para api salvar o ultimo acesso
@@ -237,3 +237,7 @@ class ProfileView(View):
         return render(request, 'app/profile.html', {'context': context})
 
 
+class UploadImageView(View):
+    def post(self, request, *args, **kwargs):
+        print "a"
+        return render(request, 'app/index.html', {})

@@ -15,4 +15,5 @@ urlpatterns = [
     url(r'^password/update/$', views.UpdatePasswordView.as_view(), name='update_password'),
     url(r'^indicate/course/$', views.IndicateCourseView.as_view(), name='indicate_course'),
     url(r'^user/profile/$', views.ProfileView.as_view(), name='profile'),
+    url(r'^user/upload/image$', views.UploadImageView.as_view(), name='upload_image'),
 ]

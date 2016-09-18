@@ -12,7 +12,18 @@
 				{% endwith %}
 			</tr>
 		</table>
+		<div id="foto" class="reveal-modal tiny" data-reveal aria-labelledby="modalTitle">
+			<h2 id="modalTitle">Modificar foto</h2>
+			<p class="lead">selecione a imagem </p>
+			<form action="{% url 'app:upload_image' %}" method="post" enctype="multipart/form-data">
+				{% csrf_token %}
+				<input type="file" name="file" id="file" class="file-input">
+				<input type="submit" value="Enviar Imagem" name="submit" class="button expand index">
+			</form>
+			<a class="close-reveal-modal" aria-label="Close">&#215;</a>
+		</div>
 	</div>
+
 	<div class="large-6 columns panel info" data-equalizer-watch>
 		<h4> Nome:
 			<p> {{ context.name }} </p>
