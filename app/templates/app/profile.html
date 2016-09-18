@@ -1,9 +1,47 @@
 {% extends "app/base.html" %}
+{% load static %}
+{% block menu_content %}
 
-{% block content %}
-<a>Foto</a>
-<a>Informaçoes</a>
-<a>Estatistica do usuario
-	ultimo acesso e data de criacao
-</a>
+<div class="row" data-equalizer>
+	<div class="medium-5 columns panel imagem" data-equalizer-watch>
+		<table>
+			<caption align="bottom"><a href="#" data-reveal-id="foto">Modificar foto</a></caption>
+			<tr>
+				{% with context.path|add:context.photo as link %}
+				<td><img src="{% static  link %}"></td>
+				{% endwith %}
+			</tr>
+		</table>
+	</div>
+	<div class="large-6 columns panel info" data-equalizer-watch>
+		<h4> Nome:
+			<p> {{ context.name }} </p>
+		</h4>
+
+		<h4> Email:
+			<p> {{ context.email }}</p>
+		</h4>
+
+		<h4> Username:
+			<p> {{ context.username }}</p>
+		</h4>
+
+
+		<a href="" class="button tiny round index"><span>Editar informações</span></a>
+	</div> 
+</div>
+
+<div class="row" data-equalizer>
+	<div class="small-6 columns panel estatistica" data-equalizer-watch>
+		<h3>ESTATÍSTICAS DO USUÁRIO</h3>
+			<h4>Membro desde:
+				<p> {{ context.date_joined }} </p>
+			</h4>
+			<h4>Ultimo acesso:
+				<p> {{ context.last_login }} </p>
+			</h4>
+		</h3>
+	</div>
+</div>
+
 {% endblock %}

@@ -224,6 +224,16 @@ class IndicateCourseView(View):
 
 class ProfileView(View):
     def get(self, request, *args, **kwargs):
-        return render(request, 'app/profile.html', {})
+        user = User.objects.get(username=request.user.username)
+        context = {
+            'photo': "default.jpeg",
+            'path': "app/img/user/",
+            'name': '{} {}'.format(user.first_name, user.last_name),
+            'email': user.email,
+            'username': user.username,
+            'last_login': user.last_login,
+            'date_joined': user.date_joined,
+        }
+        return render(request, 'app/profile.html', {'context': context})
 
 
