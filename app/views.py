@@ -11,9 +11,7 @@ from django.http import JsonResponse
 from django.shortcuts import render, redirect
 from django.core.files.storage import default_storage
 
-from app import settings
-from .forms import SurveyForm, UserFormLogin, UserFormSignUp, UpdatePasswordForm, IndicateCourseForm
-
+from app import settings, forms
 # Create your views here.
 
 
@@ -44,7 +42,7 @@ class SurveyView(TemplateView):
                 'error_message': 'Algo aconteceu errado: status code: {}'
                 .format(response.status_code)
             }
-        context['form'] = SurveyForm(
+        context['form'] = forms.SurveyForm(
             self.fmt_list(response.json()[0]['Price']),
             self.fmt_list(response.json()[0]['Based']),
             self.fmt_list(response.json()[0]['Platform']),
@@ -115,7 +113,7 @@ class TypesCoursesView(View):
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
-        form = UserFormLogin()
+        form = forms.UserFormLogin()
         return render(request, 'app/form.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -138,7 +136,7 @@ class LoginView(View):
             return render(
                 request,
                 'app/form.html',
-                {'form': UserFormLogin(), 'alert_error': "Usuário ou senha incorretos"}
+                {'form': forms.UserFormLogin(), 'alert_error': "Usuário ou senha incorretos"}
             )
 
         return render(request, 'app/index.html', {})
@@ -147,7 +145,7 @@ class LoginView(View):
 # TODO: Fazer request para o servidor guardar tais informações no banco de dados
 class SignUpView(View):
     def get(self, request, *args, **kwargs):
-        form = UserFormSignUp()
+        form = forms.UserFormSignUp()
         return render(request, 'app/form.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -179,7 +177,7 @@ class LogOutView(View):
 
 class UpdatePasswordView(View):
     def get(self, request, *args, **kwargs):
-        form = UpdatePasswordForm()
+        form = forms.UpdatePasswordForm()
         return render(request, 'app/form.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
@@ -202,7 +200,7 @@ class IndicateCourseView(View):
     def get(self, request, *args, **kwargs):
         type = [('Language', 'Idiomas', )]
         course = [('Ingles', 'Ingles', )]
-        form = IndicateCourseForm(type, course)
+        form = forms.IndicateCourseForm(type, course)
         return render(request, 'app/form.html', {'form': form})
 
     def post(self, request, *args, **kwargs):
