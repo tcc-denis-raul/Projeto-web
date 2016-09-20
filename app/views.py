@@ -2,12 +2,14 @@
 import json
 import requests
 import urllib
+import os
 
 from django.views.generic import TemplateView, View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.http import JsonResponse
 from django.shortcuts import render, redirect
+from django.core.files.storage import default_storage
 
 from app import settings
 from .forms import SurveyForm, UserFormLogin, UserFormSignUp, UpdatePasswordForm, IndicateCourseForm
@@ -224,10 +226,14 @@ class IndicateCourseView(View):
 
 class ProfileView(View):
     def get(self, request, *args, **kwargs):
-        user = User.objects.get(username=request.user.username)
+        username = request.user.username
+        user = User.objects.get(username=username)
+        photo = 'default'
+        if os.path.exists(settings.IMAGE_PATH + username):
+            photo = username
         context = {
-            'photo': "default.jpeg",
-            'path': "app/img/user/",
+            'photo': photo,
+            'path': settings.IMAGE_PATH_STATIC,
             'name': '{} {}'.format(user.first_name, user.last_name),
             'email': user.email,
             'username': user.username,
@@ -239,5 +245,10 @@ class ProfileView(View):
 
 class UploadImageView(View):
     def post(self, request, *args, **kwargs):
-        print "a"
-        return render(request, 'app/index.html', {})
+        path = settings.IMAGE_PATH
+        file = request.FILES['image']
+        name = request.user.username
+        with open(default_storage.path(path + name), 'wb+') as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+        return redirect('app:profile')

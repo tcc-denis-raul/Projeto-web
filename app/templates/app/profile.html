@@ -1,7 +1,6 @@
 {% extends "app/base.html" %}
 {% load static %}
 {% block menu_content %}
-
 <div class="row" data-equalizer>
 	<div class="medium-5 columns panel imagem" data-equalizer-watch>
 		<table>
@@ -17,7 +16,7 @@
 			<p class="lead">selecione a imagem </p>
 			<form action="{% url 'app:upload_image' %}" method="post" enctype="multipart/form-data">
 				{% csrf_token %}
-				<input type="file" name="file" id="file" class="file-input">
+				<input type="file" name="image"  class="file-input">
 				<input type="submit" value="Enviar Imagem" name="submit" class="button expand index">
 			</form>
 			<a class="close-reveal-modal" aria-label="Close">&#215;</a>
