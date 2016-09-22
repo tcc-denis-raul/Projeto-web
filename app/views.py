@@ -84,8 +84,16 @@ class ResultSurveyView(View):
             "length": 5
         }
         if request.GET['save'].lower() == "true":
-            # TODO: Send data to api, api store the data
-            print data
+            data['username'] = request.user.username
+            data_qs = urllib.urlencode(data)
+            url = '{}/users/profile?{}'.format(settings.PALOMA_HOST, data_qs)
+            response = requests.post(url, data_qs)
+            if response.status_code != 200:
+                return render(
+                    request,
+                    'app/courses.html',
+                    {'error_message': 'Algo aconteceu errado: status code'}
+                )
         filter = urllib.urlencode(data)
         url = '{}/courses?{}'.format(settings.PALOMA_HOST, filter)
         response = requests.get(url)
@@ -243,6 +251,12 @@ class ProfileView(View):
 
 class UploadImageView(View):
     def post(self, request, *args, **kwargs):
+        data = {
+           "username": "username",
+        }
+        data_qr = urllib.urlencode(data)
+        url_req = "{}/users/profile?{}".format(settings.PALOMA_HOST, data_qr) 
+        response = requests.post(url_req)
         path = settings.IMAGE_PATH
         file = request.FILES['image']
         name = request.user.username
