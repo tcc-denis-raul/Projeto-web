@@ -768,7 +768,9 @@ footer p {
 
 /* fim login.php*/
 
-/* index.php */
+
+/* index */
+
 button.index,
 .button.index {
     background: -moz-linear-gradient(left, rgba(32,82,162,1) 0%, rgba(32,82,162,0.5) 50%, rgba(129,179,233,0.03) 97%, rgba(129,179,233,0) 100%); /* FF3.6-15 */
@@ -786,7 +788,12 @@ button.index:focus,
     background: linear-gradient(to right, rgba(129,179,233,0) 0%,rgba(129,179,233,0.03) 3%,rgba(32,82,162,0.5) 50%,rgba(32,82,162,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 }
 
-/* fim index.php */
+.button.survey {
+    width: 100%;
+}
+/* fim index */
+
+.button.survey {}
 
 /* top_menu_modelo.php */
 .reveal-modal {
@@ -806,14 +813,34 @@ button.index:focus,
 }
 /* fim top_menu_modelo.php*/
 
-/* survey.php */
-.survey div h3, form div div label{
-    color: white;
+
+/* survey */
+.survey {
+	display: block;
+	text-align: center;
 }
 
-.survey form div div {
-    margin-left: 25%;
+.survey div span {
+	color: #fff;
+	font-family: "raleway-regular", Helvetica, Arial, sans-serif;
+	font-size: 18px;
 }
+
+.survey form {
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	text-align: left;
+	width: 40%;
+}
+
+.survey form p label {
+	font-family: "raleway-regular", Helvetica, Arial, sans-serif;
+	font-size: 14px;
+	color: white;
+}
+
+
 
 /* fim survey.php*/
 

@@ -1,11 +1,14 @@
 {% extends 'app/base.html' %}
-
+{% load staticfiles %}
 
 {% block menu_content %}
-<form action="{% url 'app:result_survey' context.type 'ingles' %}?save={{context.save}}" method='post'>
-    {% csrf_token %}
-	{{ context.form.as_p }}
-    <input type='submit' value='Selecionar'>
-</form>
-
+<div class="survey">
+	<div><span>Escolha aqui as opções para seu curso</span></div>
+	</br>
+	<form action="{% url 'app:result_survey' context.type 'ingles' %}?save={{context.save}}" method='post'>
+    	{% csrf_token %}
+		{{ context.form.as_p }}
+    	<input type='submit' value='Selecionar' class="button round index survey">
+	</form>
+</div>
 {% endblock %}
