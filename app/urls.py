@@ -8,7 +8,7 @@ urlpatterns = [
     url(r'^survey/(?P<type>[\w+]+)/(?P<save>true|false)/$', views.SurveyView.as_view(), name='survey'),
     url(r'^types/courses/$', views.TypesCoursesView.as_view(), name='types_courses'),
     url(r'^courses/(?P<type>[\w+]+)/(?P<course>[\w+]+)/$', views.CoursesView.as_view(), name='courses'),
-    url(r'^survey/(?P<type>[\w+]+)/(?P<course>[\w+]+)/result/$', views.ResultSurveyView.as_view(), name='result_survey'),
+    url(r'^survey/(?P<type>[\w+]+)/(?P<course>[\w+]+)/result/(?P<save>true|false)/$', views.ResultSurveyView.as_view(), name='result_survey'),
     url(r'^login/$', views.LoginView.as_view(), name='login'),
     url(r'^signup/$', views.SignUpView.as_view(), name='signup'),
     url(r'^logout/$', views.LogOutView.as_view(), name='logout'),
@@ -16,4 +16,6 @@ urlpatterns = [
     url(r'^indicate/course/$', views.IndicateCourseView.as_view(), name='indicate_course'),
     url(r'^user/profile/$', views.ProfileView.as_view(), name='profile'),
     url(r'^user/upload/image$', views.UploadImageView.as_view(), name='upload_image'),
+    url(r'^courses/available$', views.AvailableCoursesView.as_view(), name='available_courses'),
+    url(r'^course/detail/(?P<name>[\w\W\s+]+)$', views.CourseDetailView.as_view(), name='course_detail'),
 ]

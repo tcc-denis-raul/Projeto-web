@@ -1,31 +1,4 @@
-/*
-
-    Template Name   : Volcano
-    Template Author : http://pixelhint.com
-    Author Email    : contact@pixelhint.com
-    License    		: http://pixelhint.com/license
-
-
-    *****************************************
-
-
-    - Fonts
-    - Reset Default Foundation Styling
-    - Hero
-    - Header
-    - Services
-    - Fancy Button
-    - Quote
-    - Testimonials
-    - Call To Action
-    - Google Map
-    - Footer
-    - Responsive CSS
-
-*/
-
-
-/*		Fonts		*/
+//*		Fonts		*/
 
 @font-face {
     font-family: 'lato-black';
@@ -256,8 +229,7 @@ header .top-bar-section li:not(.has-form) a:not(.button):hover {
 }
 
 
-/*    Services    */
-
+/*    index    */
 .services {
     padding: 140px 0;
 }
@@ -559,80 +531,6 @@ header .top-bar-section li:not(.has-form) a:not(.button):hover {
 }
 
 
-/*    Call To Action    */
-
-.cta {
-    background: #ffffff;
-    padding: 140px 0;
-    background: url('../img/cubes.png') repeat;
-    text-align: center;
-}
-
-.cta .title {
-    color: #454545;
-    font-family: "raleway-bold", Helvetica, Arial, sans-serif;
-    font-size: 26px;
-    font-weight: bold;
-    text-transform: uppercase;
-    margin-bottom: 10px;
-}
-
-.cta .sub_title {
-    color: #454545;
-    font-family: "raleway-light", Helvetica, Arial, sans-serif;
-    font-weight: lighter;
-    font-size: 18px;
-    text-transform: lowercase;
-}
-
-.cta .btn_fancy {
-    margin-top: 60px;
-}
-
-
-/*    Google Map    */
-
-.map {
-    width: 100%;
-    height: 550px;
-    position: relative;
-    overflow: hidden;
-}
-
-.map #map_container {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    z-index: 20;
-}
-
-#map_container img {
-    max-width: none;
-}
-
-.map .shadow {
-    width: 100%;
-    height: 158px;
-    background: url('../img/shadow.png') repeat-x;
-    position: absolute;
-    bottom: -1px;
-    left: 0;
-    z-index: 90;
-}
-
-#map_container .map_contacts {
-    color: #454545;
-}
-
-#map_container .map_contacts span {
-    font-family: "raleway-bold", Helvetica, Arial, sans-serif;
-    font-weight: bold;
-    text-transform: uppercase;
-}
-
-
 /*    Footer    */
 
 footer {
@@ -727,49 +625,11 @@ footer p {
 
 /*    Novas Alterações Desktop    */
 
-/*    hero para outras paginas    */
-
-.hero2 {
-    width: 100%;
-    background: url('../img/slide.jpg') no-repeat 50% 50%;
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
-    background-size: cover;
-    /*padding: 140px 0;*/
-}
-
 .top-bar-section .has-dropdown>a:after {
     margin-top: -17px;
     margin-right: 40px;
 }
 
-#course {
-    background: transparent;
-    height: auto;
-    line-height: normal;
-    padding-top: 5px;
-}
-
-/* login.php */
-.log-in-form {
-    border: 1px solid #cacaca;
-    padding: 1rem;
-    border-radius: 3px; 
-}
-
-.log-in-form h4 {
-    color: white;
-}
-
-.log-in-form label {
-    color: white;
-}
-
-/* fim login.php*/
-
-
-/* index */
 
 button.index,
 .button.index {
@@ -791,11 +651,9 @@ button.index:focus,
 .button.survey {
     width: 100%;
 }
-/* fim index */
 
 .button.survey {}
 
-/* top_menu_modelo.php */
 .reveal-modal {
     background: url('../img/slide.jpg');
 }
@@ -811,7 +669,6 @@ button.index:focus,
 .reveal-modal p {
     color: white;
 }
-/* fim top_menu_modelo.php*/
 
 
 /* survey */
@@ -839,12 +696,112 @@ button.index:focus,
 	font-size: 14px;
 	color: white;
 }
+/* fim survey */
 
 
 
-/* fim survey.php*/
+/* available_courses */
+.available {
+	display: block;
+	text-align: center;
+}
 
-/* perfil.php */
+.available ul {
+	display: inline-block;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+	text-align: center;
+	background: transparent;
+	width: 75%;
+}
+
+.available ul li a p {
+	color: white;
+	margin-top: 20px;
+}
+
+.available ul li {
+	border: 2px solid rgba(255,255,255,0.1);
+	-moz-border-radius: 50px;
+	-webkit-border-radius: 50px;
+	-o-border-radius: 100px;
+
+}
+
+.available ul li:hover,
+.available ul li:focus {
+	background: rgba(255,255,255,0.15);
+	border: 2px solid rgba(255,255,255,0.5);
+}
+
+.available ul li a img {
+	-moz-border-radius: 1000px;
+	-webkit-border-radius: 1000px;
+	-o-border-radius: 10px;
+	border-color: transparent;
+} 
+
+/* end available_courses */
+
+/* courses */
+.slider {
+    width: 60%;
+    margin: 100px auto;
+}
+.slick-slide {
+  margin: 0px 20px;
+}
+.slick-slide img {
+  width: 100%;
+}
+.slick-prev:before,
+.slick-next:before {
+    color: white;
+}
+
+.courses {
+    text-align: center;
+    border: 2px solid rgba(255,255,255,0.3);
+}
+
+.courses a p {
+    color: white;
+    margin-top: 20px;
+}
+
+.courses a img {
+    width: 100px
+    border: 2px solid rgba(255,255,255,0.1);
+    -moz-border-radius: 1000px;
+    -webkit-border-radius: 90px;
+    -o-border-radius: 1000px;
+
+}
+
+.courses:hover,
+.courses:focus {
+    background: rgba(255,255,255,0.15);
+    border: 2px solid rgba(255,255,255,0.5);
+}
+
+.courses a img {
+    width: 150px;
+    height: 100px;
+    -moz-border-radius: 100px;
+    -webkit-border-radius: 100px;
+    -o-border-radius: 5px;
+    border-color: transparent;
+} 
+
+
+/**/
+
+/* end available_courses */
+
+
+
+/* perfil */
 .panel {
     background: transparent;
     border-color: transparent;
@@ -889,7 +846,7 @@ button.index:focus,
 .file-input {
     color: white;
 }
-/* fim perfil.php */
+/* fim perfil */
 
 /*    Fim Novas Alterações Desktop    */
 

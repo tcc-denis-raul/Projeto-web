@@ -1,0 +1,21 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block menu_content %}
+<div class="available">
+	<ul class="small-block-grid-2 medium-block-grid-3 large-block-grid-4">
+		{% for type in context.types %}
+			{% for key, value in type.items %}
+				<li>
+					<a href="{% url 'app:survey' key|lower request.user.is_authenticated|lower %}">
+						{% with context.path|add:key as link %}
+						<td><img src="{% static  link %}"></td>
+						{% endwith %}
+						<p>Inglês</p>
+					</a>
+				</li>
+			{% endfor %}
+		{% endfor %}
+</ul>
+</div>
+{% endblock %}

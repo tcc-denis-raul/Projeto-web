@@ -7,16 +7,12 @@
 	    <h1 class="mean_cap">Encontre o Curso</hA>
 	    <h2 class="sub_cap">Ideal para voce!</h2>
 
-		{% if not request.user.is_authenticated %}
-	    	<a href="{% url 'app:survey' 'language' 'false' %}" class="button round index"><span>Descubra rapidamente</span></a>
-		{% else %}
-	    	<a href="{% url 'app:survey' 'language' 'true' %}" class="button round index"><span>Descubra rapidamente</span></a>
-		{% endif %}	
+		<a href="{% url 'app:available_courses' %}" class="button round index"><span>Descubra rapidamente</span></a>
 	</div>
 </section>
 {% endblock %}
 
-{% block content %}        
+{% block content %}
 <section class="services" id="services">
 	<div class="row">
 		<h1 class="mean_title">Com Paloma a dificuldade acabou</h1>

@@ -13,8 +13,8 @@
         <!--    Stylesheet Files    -->
         <link rel="stylesheet" type="text/css" href="{% static 'app/css/normalize.css' %}" />
         <link rel="stylesheet" type="text/css" href="{% static 'app/css/foundation.min.css' %}" />
-        <link rel="stylesheet" type="text/css" href="{% static 'app/css/main.css' %}" />
-        {% block css %}
+		<link rel="stylesheet" type="text/css" href="{% static 'app/css/main.css' %}" />	
+		{% block css %}
         {% endblock %}
     </head>
 
@@ -82,6 +82,7 @@
         <script type="text/javascript" src="{% static 'app/js/main.js' %}"></script>	
 		<script type="text/javascript" src="{% static 'app/js/jquery.js' %}"></script>
 		<script type="text/javascript" src="{% static 'app/js/foundation.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/slick/slick.js'%}">
 		<script>
 			$(document).foundation();
 		</script>

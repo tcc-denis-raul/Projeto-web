@@ -1,11 +1,70 @@
 {% extends 'app/base.html' %}
+{% load static %}
+{% load image %}
 
+{% block css %}
+	<link rel="stylesheet" type="text/css" href="{% static 'app/slick/slick.css' %}" />
+	<link rel="stylesheet" type="text/css" href="{% static 'app/slick/slick-theme.css' %}" />
+{% endblock %}
 
 {% block menu_content %}
-{% for course in courses %}
-<p>
-<a> {{ course.Name }}</a>
-</p>
-{% endfor %}
+<section class="responsive slider">
+	{% for course in context.courses %}
+	<div class="courses">
+		<a href="{% url 'app:course_detail' course.Name  %}">
+			{% with context.path|add:course.Name as link %}
+			{% if link|exist_path %}
+				<img src="{% static  link %}">
+			{% else %}
+				{% with context.path|add:'default' as link %}
+					<img src="{% static link %}">
+				{% endwith%}
+			{% endif%}
+			{% endwith %}
+			<p>{{ course.Name }}</p>
+		</a>
+	</div>
+	{% endfor %}
+</section>
+{% endblock %}
 
+{% block js %}
+<script type="text/javascript">
+    $(document).on('ready', function() {
+      $('.responsive').slick({
+		dots: true,
+		infinite: false,
+		speed: 300,
+		slidesToShow: 4,
+		slidesToScroll: 4,
+		responsive: [
+			{
+				breakpoint: 1024,
+				settings: {
+					slidesToShow: 3,
+					slidesToScroll: 3,
+					infinite: true,
+					dots: true
+				}
+			},
+			{
+				breakpoint: 600,
+				settings: {
+					slidesToShow: 2,
+					slidesToScroll: 2,
+					dots: false
+				}
+			},
+			{
+				breakpoint: 480,
+				settings: {
+					slidesToShow: 1,
+					slidesToScroll: 1,
+					dots: false
+				}
+			}
+		]
+		});
+    });
+  </script>
 {% endblock %}

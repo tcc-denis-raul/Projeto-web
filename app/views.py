@@ -67,8 +67,11 @@ class CoursesView(TemplateView):
                 'error_message': 'Algo aconteceu errado: status code: {}'
                 .format(response.status_code)
             }
-
-        return {'courses': response.json()}
+        context = {
+            "courses": response.json(),
+            'path': settings.LOGO_IMAGE_STATIC
+        }
+        return {'context': context}
 
 
 class ResultSurveyView(View):
@@ -83,7 +86,7 @@ class ResultSurveyView(View):
             "platform": request.POST['Platform'],
             "length": 5
         }
-        if request.GET['save'].lower() == "true":
+        if self.kwargs['save'].lower() == "true":
             data['username'] = request.user.username
             data_qs = urllib.urlencode(data)
             url = '{}/users/profile?{}'.format(settings.PALOMA_HOST, data_qs)
@@ -103,7 +106,11 @@ class ResultSurveyView(View):
                 'app/courses.html',
                 {'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)}
             )
-        return render(request, 'app/courses.html', {'courses': response.json()})
+        context = {
+            'courses': response.json(),
+            'path': settings.LOGO_IMAGE_STATIC
+        }
+        return render(request, 'app/courses.html', {'context': context})
 
 
 class TypesCoursesView(View):
@@ -118,6 +125,24 @@ class TypesCoursesView(View):
             }
         return JsonResponse(json.dumps(response.json()), safe=False)
 
+
+class AvailableCoursesView(TemplateView):
+    template_name = "app/available_courses.html"
+
+    def get_context_data(self, **kwargs):
+        url = '{}/types/courses'.format(settings.PALOMA_HOST)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {
+                'error_message': 'Algo aconteceu errado: status code: {}'
+                .format(response.status_code)
+            }
+        context = {
+            "types": response.json(),
+            "path": settings.TYPES_IMAGE_STATIC,
+            "photo_default": '{}default'.format(settings.TYPES_IMAGE_STATIC)
+        }
+        return {'context': context}
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
@@ -235,11 +260,11 @@ class ProfileView(View):
         username = request.user.username
         user = User.objects.get(username=username)
         photo = 'default'
-        if os.path.exists(settings.IMAGE_PATH + username):
+        if os.path.exists(settings.USER_IMAGE_PATH_COMPLETE + username):
             photo = username
         context = {
             'photo': photo,
-            'path': settings.IMAGE_PATH_STATIC,
+            'path': settings.USER_IMAGE_STATIC,
             'name': '{} {}'.format(user.first_name, user.last_name),
             'email': user.email,
             'username': user.username,
@@ -257,10 +282,18 @@ class UploadImageView(View):
         data_qr = urllib.urlencode(data)
         url_req = "{}/users/profile?{}".format(settings.PALOMA_HOST, data_qr) 
         response = requests.post(url_req)
-        path = settings.IMAGE_PATH
+        path = settings.USER_IMAGE_PATH_COMPLETE
         file = request.FILES['image']
         name = request.user.username
         with open(default_storage.path(path + name), 'wb+') as destination:
             for chunk in file.chunks():
                 destination.write(chunk)
         return redirect('app:profile')
+
+
+class CourseDetailView(TemplateView):
+    template_name = 'app/detail.html'
+
+    def get_context_data(self, **kwargs):
+        course_name = self.kwargs['name']
+        return {'context': course_name}
