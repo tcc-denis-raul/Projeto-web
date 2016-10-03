@@ -755,6 +755,7 @@ button.index:focus,
 .slick-slide img {
   width: 100%;
 }
+
 .slick-prev:before,
 .slick-next:before {
     color: white;
@@ -765,12 +766,12 @@ button.index:focus,
     border: 2px solid rgba(255,255,255,0.3);
 }
 
-.courses a p {
+.courses p p {
     color: white;
     margin-top: 20px;
 }
 
-.courses a img {
+.courses p img {
     width: 100px
     border: 2px solid rgba(255,255,255,0.1);
     -moz-border-radius: 1000px;
@@ -785,7 +786,7 @@ button.index:focus,
     border: 2px solid rgba(255,255,255,0.5);
 }
 
-.courses a img {
+.courses p img {
     width: 150px;
     height: 100px;
     -moz-border-radius: 100px;

@@ -69,6 +69,8 @@ class CoursesView(TemplateView):
             }
         context = {
             "courses": response.json(),
+            "type": typ,
+            "course": course,
             'path': settings.LOGO_IMAGE_STATIC
         }
         return {'context': context}
@@ -108,6 +110,8 @@ class ResultSurveyView(View):
             )
         context = {
             'courses': response.json(),
+            "type": self.kwargs['type'],
+            "course": self.kwargs['course'],
             'path': settings.LOGO_IMAGE_STATIC
         }
         return render(request, 'app/courses.html', {'context': context})
@@ -291,9 +295,80 @@ class UploadImageView(View):
         return redirect('app:profile')
 
 
-class CourseDetailView(TemplateView):
-    template_name = 'app/detail.html'
+class CourseDetailView(View):
+    def fmt_list(self, ufmt, fmt, char):
+        result = []
+        if char == "Price":
+            if ufmt["PriceReal"] != None:
+                for value in ufmt["PriceReal"]:
+                    result.append('R${},00'.format(value))
+            if ufmt["PriceDolar"] != None:
+                for value in ufmt["PriceDolar"]:
+                    result.append('${},00'.format(value))
+        else:
+            for value in ufmt[char]:
+                for dict in fmt[0][char]:
+                    if dict.get(value) != None:
+                        result.append(dict.get(value))
+        return result
 
-    def get_context_data(self, **kwargs):
-        course_name = self.kwargs['name']
-        return {'context': course_name}
+    def fmt_table(self, detail, char):
+        result = {
+            "name": {
+                "label": "Name",
+                "value": detail["Name"],
+            },
+            "url": {
+                "label": "Endereço",
+                "value": detail["Url"],
+            },
+            "based": {
+                "label": "Baseado em",
+                "value": self.fmt_list(detail, char, "Based"),
+            },
+            "platform": {
+                "label": "Plataforma",
+                "value": self.fmt_list(detail, char, "Platform"),
+            },
+            "extra": {
+                "label": "Característica extras",
+                "value": self.fmt_list(detail, char, "Extra"),
+            },
+            "dynamic": {
+                "label": "Dinâmica do curso",
+                "value": self.fmt_list(detail, char, "Dynamic"),
+            },
+            "price": {
+                "label": "Preços",
+                "value": self.fmt_list(detail, char, "Price"),
+            }
+        }
+        return json.dumps(result)
+
+    def get(self, request, *args, **kwargs):
+        context = {
+            "name": self.kwargs['name'],
+            "type": self.kwargs["type"],
+            "course": self.kwargs["course"],
+        }
+        url = '{}/course/detail?type={}&course={}&name={}'.format(settings.PALOMA_HOST, context['type'], context['course'], context['name'])
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {
+                'error_message': 'Algo aconteceu errado: status code: {}'
+                .format(response.status_code)
+            }
+        detail = response.json()
+
+        url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, context['type'])
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {
+                'error_message': 'Algo aconteceu errado: status code: {}'
+                .format(response.status_code)
+            }
+        list_char = response.json()
+
+        formated_courses = self.fmt_table(detail, list_char)
+        context["courses"] = formated_courses
+        return JsonResponse(json.dumps({'context': context}), safe=False)

@@ -11,7 +11,7 @@
 <section class="responsive slider">
 	{% for course in context.courses %}
 	<div class="courses">
-		<a href="{% url 'app:course_detail' course.Name  %}">
+		<p onmouseover='return load_course_detail("{{ course.Name }}", "{{ context.type }}", "{{ context.course }}");'>
 			{% with context.path|add:course.Name as link %}
 			{% if link|exist_path %}
 				<img src="{% static  link %}">
@@ -22,13 +22,49 @@
 			{% endif%}
 			{% endwith %}
 			<p>{{ course.Name }}</p>
-		</a>
+		</p>
 	</div>
 	{% endfor %}
 </section>
+<div class="reveal-modal" data-reveal aria-labelledby="label" aria-hidden="true" role="dialog" id="course_detail">
+	<h2 id="label">Ficha Técnica</h2>
+	<p class="lead" id="name"> </p>
+	<p class="lead" id="price"> </p>
+	<p class="lead" id="platform"> </p>
+	<p class="lead" id="based"> </p>
+	<p class="lead" id="dynamic"> </p>
+	<p class="lead" id="extra"> </p>
+	<p id="url"> </p>
+	<a href="avaliar">Avaliar</p>
+	
+</div>
 {% endblock %}
 
 {% block js %}
+<script type="text/javascript">
+    function load_course_detail(name, type, course) {
+    	$.ajax({
+        	url: '/app/course/detail/' + name + "/" + type + "/" + course,
+        	dataType: 'json',
+        	type: 'GET',
+			success: function(data) {
+				var jsdt = $.parseJSON(data)
+				var data = $.parseJSON(jsdt.context.courses);
+				console.log(data);
+				$("#name").empty();$("#price").empty();$("#platform").empty();$("#based").empty();$("#dynamic").empty();
+				$("#extra").empty();$("#url").empty();
+				$("#name").append('<b>' + data['name']['label'] + ': ' + '</b>' + data['name']['value']);
+				$("#price").append('<b>' + data['price']['label'] + ': ' + '</b>' + data['price']['value']);
+				$("#platform").append('<b>' + data['platform']['label'] + ': ' + '</b>' + data['platform']['value']);
+				$("#based").append('<b>' + data['based']['label'] + ': ' + '</b>' + data['based']['value']);
+				$("#dynamic").append('<b>' + data['dynamic']['label'] + ': ' + '</b>' + data['dynamic']['value']);
+				$("#extra").append('<b>' + data['extra']['label'] + ': ' + '</b>' + data['extra']['value']);
+				$("#url").append('<b>' + data['url']['label'] + ': ' + '</b>' + '<a href="' + data['url']['value'] + '">' + data['url']['value'] + '</a>');
+				$("#course_detail").foundation("reveal", "open");
+			}
+        });
+    }
+</script>
 <script type="text/javascript">
     $(document).on('ready', function() {
       $('.responsive').slick({
