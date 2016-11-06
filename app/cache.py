@@ -8,7 +8,11 @@ from app import settings
 class Cache():
     def __init__(self):
         self.host = urlparse(settings.REDIS_HOST)
-        self.client = redis.StrictRedis(host=self.host.hostname, port=self.host.port)
+        self.client = redis.StrictRedis(
+            host=self.host.hostname,
+            port=self.host.port,
+            password=settings.REDIS_PWD
+        )
         self.HASH = "courses"
 
     def _save(self, key, value):

@@ -3,6 +3,7 @@ import os
 
 PALOMA_HOST = os.environ.get("PALOMA", "http://localhost:5000")
 REDIS_HOST = os.environ.get("REDIS_URL", "http://localhost:6379")
+REDIS_PWD = os.environ.get("REDIS_PWD", "default")
 
 USER_IMAGE_STATIC = 'app/img/user/'
 USER_IMAGE_PATH_COMPLETE = '{}/app/static/{}'.format(os.getcwd(), USER_IMAGE_STATIC)
