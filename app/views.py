@@ -88,7 +88,7 @@ class ResultSurveyView(View):
             "platform": request.POST['Platform'],
             "length": 5
         }
-        if self.kwargs['save'].lower() == "true":
+        if self.kwargs['save'].lower() == "false":
             data['username'] = request.user.username
             data_qs = urllib.urlencode(data)
             url = '{}/users/profile?{}'.format(settings.PALOMA_HOST, data_qs)
