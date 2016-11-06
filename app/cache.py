@@ -12,10 +12,13 @@ class Cache():
         self.HASH = "courses"
 
     def _save(self, key, value):
-        if self.client.hexists(self.HASH, key):
+        try:
+            if self.client.hexists(self.HASH, key):
+                self.client.expire(self.HASH, 300)
+            self.client.hset(self.HASH, key, json.dumps(value))
             self.client.expire(self.HASH, 300)
-        self.client.hset(self.HASH, key, json.dumps(value))
-        self.client.expire(self.HASH, 300)
+        except Exception as error:
+            print "Dont save because: %s" % error
 
     def save(self, courses):
         for course in courses:
