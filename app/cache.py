@@ -25,7 +25,10 @@ class Cache():
             self._save(course.get("Name"), course)
 
     def get(self, key):
-        if not self.client.hexists(self.HASH, key):
-            raise KeyError('invalid')
-        value = self.client.hget(self.HASH, key)
-        return json.loads(value)
+        try:
+            if not self.client.hexists(self.HASH, key):
+                raise KeyError('invalid')
+            value = self.client.hget(self.HASH, key)
+            return json.loads(value)
+        except Exception:
+            raise Exception

@@ -357,7 +357,7 @@ class CourseDetailView(View):
         detail = {}
         try:
             detail = Cache().get(context['name'])
-        except KeyError: 
+        except: 
             url = '{}/course/detail?type={}&course={}&name={}'.format(settings.PALOMA_HOST, context['type'], context['course'], context['name'])
             response = requests.get(url)
             if response.status_code != 200:
