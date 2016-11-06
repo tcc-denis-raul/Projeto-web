@@ -12,6 +12,7 @@ from django.shortcuts import render, redirect
 from django.core.files.storage import default_storage
 
 from app import settings, forms
+from cache import Cache
 # Create your views here.
 
 
@@ -73,6 +74,7 @@ class CoursesView(TemplateView):
             "course": course,
             'path': settings.LOGO_IMAGE_STATIC
         }
+        Cache().save(context['courses'])
         return {'context': context}
 
 
@@ -114,6 +116,7 @@ class ResultSurveyView(View):
             "course": self.kwargs['course'],
             'path': settings.LOGO_IMAGE_STATIC
         }
+        Cache().save(context['courses'])
         return render(request, 'app/courses.html', {'context': context})
 
 
@@ -351,15 +354,18 @@ class CourseDetailView(View):
             "type": self.kwargs["type"],
             "course": self.kwargs["course"],
         }
-        url = '{}/course/detail?type={}&course={}&name={}'.format(settings.PALOMA_HOST, context['type'], context['course'], context['name'])
-        response = requests.get(url)
-        if response.status_code != 200:
-            return {
-                'error_message': 'Algo aconteceu errado: status code: {}'
-                .format(response.status_code)
-            }
-        detail = response.json()
-
+        detail = {}
+        try:
+            detail = Cache().get(context['name'])
+        except KeyError: 
+            url = '{}/course/detail?type={}&course={}&name={}'.format(settings.PALOMA_HOST, context['type'], context['course'], context['name'])
+            response = requests.get(url)
+            if response.status_code != 200:
+                return {
+                    'error_message': 'Algo aconteceu errado: status code: {}'
+                    .format(response.status_code)
+                }
+            detail = response.json()
         url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, context['type'])
         response = requests.get(url)
         if response.status_code != 200:
