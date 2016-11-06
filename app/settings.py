@@ -9,5 +9,5 @@ USER_IMAGE_PATH_COMPLETE = '{}/app/static/{}'.format(os.getcwd(), USER_IMAGE_STA
 TYPES_IMAGE_STATIC = 'app/img/types/'
 TYPES_IMAGE_PATH_COMPLETE = '{}/app/static/{}'.format(os.getcwd, TYPES_IMAGE_STATIC)
 
-LOGO_IMAGE_STATIC = 'app/img/logo/'
+LOGO_IMAGE_STATIC = 'app/img/logos/'
 LOGO_IMAGE_PATH_COMPLETE = '{}/app/static/{}'.format(os.getcwd, LOGO_IMAGE_STATIC)
