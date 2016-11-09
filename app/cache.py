@@ -19,6 +19,8 @@ class Cache():
         try:
             if self.client.hexists(self.HASH, key):
                 self.client.expire(self.HASH, 300)
+            print "key: %s" % key
+            print "value: %s" % json.dumps(value)
             self.client.hset(self.HASH, key, json.dumps(value))
             self.client.expire(self.HASH, 300)
         except Exception as error:
