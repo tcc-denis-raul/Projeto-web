@@ -10,7 +10,7 @@ class Cache():
         self.host = urlparse(settings.REDIS_HOST)
         self.client = redis.StrictRedis(
             host=self.host.hostname,
-            port=self.host.port,
+            port=int(self.host.port),
             password=settings.REDIS_PWD
         )
         self.HASH = "courses"
@@ -24,7 +24,9 @@ class Cache():
             self.client.hset(self.HASH, key, json.dumps(value))
             self.client.expire(self.HASH, 300)
         except Exception as error:
-            print "Dont save because: %s" % error
+            print "Dont save because: {}, {}, {}".format(
+                error, key, value
+            )
 
     def save(self, courses):
         for course in courses:
