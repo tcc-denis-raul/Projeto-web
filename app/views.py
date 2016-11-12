@@ -12,7 +12,7 @@ from django.shortcuts import render, redirect
 from django.core.files.storage import default_storage
 
 from app import settings, forms
-from cache import Cache
+from cache import CacheSql
 # Create your views here.
 
 
@@ -74,7 +74,8 @@ class CoursesView(TemplateView):
             "course": course,
             'path': settings.LOGO_IMAGE_STATIC
         }
-        Cache().save(context['courses'])
+        #  Cache().save(context['courses'])
+        CacheSql().save(context['courses'])
         return {'context': context}
 
 
@@ -116,7 +117,8 @@ class ResultSurveyView(View):
             "course": self.kwargs['course'],
             'path': settings.LOGO_IMAGE_STATIC
         }
-        Cache().save(context['courses'])
+        #  Cache().save(context['courses'])
+        CacheSql().save(context['courses'])
         return render(request, 'app/courses.html', {'context': context})
 
 
@@ -356,7 +358,7 @@ class CourseDetailView(View):
         }
         detail = {}
         try:
-            detail = Cache().get(context['name'])
+            detail = CacheSql().get(context['name'])
         except: 
             url = '{}/course/detail?type={}&course={}&name={}'.format(settings.PALOMA_HOST, context['type'], context['course'], context['name'])
             response = requests.get(url)
