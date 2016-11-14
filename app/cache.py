@@ -6,7 +6,7 @@ from app import settings
 from app.models import CacheModel
 
 class CacheSql():
-    def _save(self, key, value):
+    def save(self, key, value):
         try:
             if CacheModel.objects.filter(name=str(key)).exists():
                 CacheModel.objects.filter(name=str(key)).delete()
@@ -17,10 +17,6 @@ class CacheSql():
             object.save()
         except Exception as error:
             print "Don't save because: %s" % error
-
-    def save(self, courses):
-        for course in courses:
-            self._save(course.get("Name"), course)
 
     def delete(self, key):
         try:

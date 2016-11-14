@@ -7,5 +7,7 @@ clean: clean_image
 deps:
 	@pip install -r requirements.txt
 
-run: clean deps 
-	@DEBUG=true ./manage.py runserver
+task:
+	@DEBUG=true ./manage.py process_tasks &
+run: clean deps task
+	@DEBUG=true ./manage.py runserver 

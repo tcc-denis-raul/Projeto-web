@@ -13,6 +13,7 @@ from django.core.files.storage import default_storage
 
 from app import settings, forms
 from cache import CacheSql
+from tasks import TaskCache
 # Create your views here.
 
 
@@ -73,9 +74,8 @@ class CoursesView(TemplateView):
             "type": typ,
             "course": course,
             'path': settings.LOGO_IMAGE_STATIC
-        }
-        #  Cache().save(context['courses'])
-        CacheSql().save(context['courses'])
+        } 
+        TaskCache(context['courses'])
         return {'context': context}
 
 
@@ -117,8 +117,7 @@ class ResultSurveyView(View):
             "course": self.kwargs['course'],
             'path': settings.LOGO_IMAGE_STATIC
         }
-        #  Cache().save(context['courses'])
-        CacheSql().save(context['courses'])
+        TaskCache(context['courses'])
         return render(request, 'app/courses.html', {'context': context})
 
 
@@ -368,15 +367,18 @@ class CourseDetailView(View):
                     .format(response.status_code)
                 }
             detail = response.json()
-        url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, context['type'])
-        response = requests.get(url)
-        if response.status_code != 200:
-            return {
-                'error_message': 'Algo aconteceu errado: status code: {}'
-                .format(response.status_code)
-            }
-        list_char = response.json()
-
+        list_char = []
+        try:
+            list_char = CacheSql().get("Questions")
+        except:
+            url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, context['type'])
+            response = requests.get(url)
+            if response.status_code != 200:
+                return {
+                    'error_message': 'Algo aconteceu errado: status code: {}'
+                    .format(response.status_code)
+                }
+            list_char = response.json()
         formated_courses = self.fmt_table(detail, list_char)
         context["courses"] = formated_courses
         return JsonResponse(json.dumps({'context': context}), safe=False)
