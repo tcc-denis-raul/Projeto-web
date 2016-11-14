@@ -70,16 +70,16 @@
                     </nav>
                 </div>
             </header>
-            
+
             {% block menu_content %}
             {% endblock %}
         </section>
-        
+
         {% block content %}        
         {% endblock %}
-        
+
         <!--    Javascript Files    -->
-        <script type="text/javascript" src="{% static 'app/js/main.js' %}"></script>	
+        <script type="text/javascript" src="{% static 'app/js/main.js' %}"></script>
 		<script type="text/javascript" src="{% static 'app/js/jquery.js' %}"></script>
 		<script type="text/javascript" src="{% static 'app/js/foundation.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'app/slick/slick.js'%}">
@@ -89,7 +89,7 @@
 		<script type="text/javascript">
             $(document).ready(function(){
                 $.ajax({
-                    url: '/app/types/courses/',
+                    url: '/types/courses/',
                     dataType: 'json',
                     type: 'GET',
                     success: function(data) {
@@ -97,12 +97,11 @@
                         for (var ind = 0; ind < types_courses.length; ind++){
                             for( type in types_courses[ind]){
                                 for(var i = 0; i < types_courses[ind][type].length; i++) {
-                                    var url = '/app/courses/' + type.toLowerCase() + '/' + types_courses[ind][type][i]
+                                    var url = '/courses/' + type.toLowerCase() + '/' + types_courses[ind][type][i]
                                     $('#dropdown').append('<li><a href="'+url+'">' + types_courses[ind][type][i] + '</a></li>')
                                 }
-                            }    
+                            }
                         }
-                        
                     }
                 });
             });

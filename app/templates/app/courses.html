@@ -44,7 +44,7 @@
 <script type="text/javascript">
     function load_course_detail(name, type, course) {
     	$.ajax({
-        	url: '/app/course/detail/' + name + "/" + type + "/" + course,
+        	url: '/course/detail/' + name + "/" + type + "/" + course,
         	dataType: 'json',
         	type: 'GET',
 			success: function(data) {
