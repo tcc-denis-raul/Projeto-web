@@ -20,22 +20,22 @@ class SurveyForm(forms.Form):
 
 
 class UserFormLogin(forms.Form):
-    UserName = forms.CharField(required=True, max_length=100, label="Username")
-    Password = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Password")
+    UserName = forms.CharField(required=True, max_length=100, label="Usuário")
+    Password = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Senha")
 
 
 class UserFormSignUp(forms.Form):
-    UserName = forms.CharField(required=True, max_length=100, label="Username")
+    UserName = forms.CharField(required=True, max_length=100, label="Usuário")
     Email = forms.CharField(required=True, max_length=100, label="Email")
-    FirstName = forms.CharField(required=True, max_length=200, label="First Name")
-    LastName = forms.CharField(required=True, max_length=200, label="Last Name")
-    Password = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Password")
-    Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirm Password")
+    FirstName = forms.CharField(required=True, max_length=200, label="Primeiro nome")
+    LastName = forms.CharField(required=True, max_length=200, label="Último nome")
+    Password = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Senha")
+    Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirmar senha")
 
 
 class UpdatePasswordForm(forms.Form):
-    NewPasswd = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="New Password")
-    Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirm Password")
+    NewPasswd = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Nova senha")
+    Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirmar senha")
 
 
 class IndicateCourseForm(forms.Form):
@@ -43,7 +43,7 @@ class IndicateCourseForm(forms.Form):
         super(IndicateCourseForm, self).__init__(*args, **kwargs)
         self.fields['Type'].choices = types
         self.fields['Course'].choices = courses
-    Type = forms.ChoiceField(choices=(), required=True)
-    Course = forms.ChoiceField(choices=(), required=True)
+    Type = forms.ChoiceField(choices=(), required=True, label="Tipo do curso")
+    Course = forms.ChoiceField(choices=(), required=True, label="Idioma")
     Name = forms.CharField(max_length=355, required=True, label="Nome do curso")
     Url = forms.CharField(max_length=355, required=True, label="Endereco do curso")

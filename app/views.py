@@ -155,7 +155,7 @@ class AvailableCoursesView(TemplateView):
 class LoginView(View):
     def get(self, request, *args, **kwargs):
         form = forms.UserFormLogin()
-        return render(request, 'app/form.html', {'form': form})
+        return render(request, 'app/form.html', {'form': form, 'title': "Entrar"})
 
     def post(self, request, *args, **kwargs):
         userName = request.POST['UserName']
@@ -183,11 +183,10 @@ class LoginView(View):
         return render(request, 'app/index.html', {})
 
 
-# TODO: Fazer request para o servidor guardar tais informações no banco de dados
 class SignUpView(View):
     def get(self, request, *args, **kwargs):
         form = forms.UserFormSignUp()
-        return render(request, 'app/form.html', {'form': form})
+        return render(request, 'app/form.html', {'form': form, 'title': "Criar conta"})
 
     def post(self, request, *args, **kwargs):
         userName = request.POST['UserName']
@@ -208,18 +207,17 @@ class SignUpView(View):
         user.save()
         return redirect('app:login')
 
-
-# TODO: fazer request para api salvar o ultimo acesso
+#TODO: add confirm dialog
 class LogOutView(View):
     def get(self, request, *args, **kwargs):
         logout(request)
-        return render(request, 'app/index.html', {})
+        return redirect('app:index')
 
 
 class UpdatePasswordView(View):
     def get(self, request, *args, **kwargs):
         form = forms.UpdatePasswordForm()
-        return render(request, 'app/form.html', {'form': form})
+        return render(request, 'app/form.html', {'form': form, 'title': 'Trocar senha'})
 
     def post(self, request, *args, **kwargs):
         username = request.user.username
@@ -242,7 +240,7 @@ class IndicateCourseView(View):
         type = [('Language', 'Idiomas', )]
         course = [('Ingles', 'Ingles', )]
         form = forms.IndicateCourseForm(type, course)
-        return render(request, 'app/form.html', {'form': form})
+        return render(request, 'app/form.html', {'form': form, 'title': "Indicar cursos"})
 
     def post(self, request, *args, **kwargs):
         data = {
