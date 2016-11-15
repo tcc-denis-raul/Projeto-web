@@ -5,7 +5,7 @@ import logging
 import requests
 
 
-@background(schedule=6)
+@background(schedule=60*5)
 def TaskCache(courses):
     logging.debug("saving courses: ")
     for course in courses:

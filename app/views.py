@@ -179,9 +179,7 @@ class LoginView(View):
                 'app/form.html',
                 {'form': forms.UserFormLogin(), 'alert_error': "Usuário ou senha incorretos"}
             )
-
-        return render(request, 'app/index.html', {})
-
+        return redirect('app:index')
 
 class SignUpView(View):
     def get(self, request, *args, **kwargs):
@@ -233,8 +231,7 @@ class UpdatePasswordView(View):
         u = User.objects.get(username=username)
         u.set_password(newPasswd)
         u.save()
-        return render(request, 'app/index.html', {})
-
+        return redirect('app:index')
 
 class IndicateCourseView(View):
     def get(self, request, *args, **kwargs):
@@ -259,8 +256,7 @@ class IndicateCourseView(View):
                 "app/index.html",
                 {'alert_error': 'Curso já cadastrado ou indicado'}
             )
-        return render(request, 'app/index.html', {})
-
+        return redirect('app:index')
 
 class ProfileView(View):
     def get(self, request, *args, **kwargs):
@@ -357,7 +353,7 @@ class CourseDetailView(View):
         detail = {}
         try:
             detail = CacheSql().get(context['name'])
-        except: 
+        except:
             url = '{}/course/detail?type={}&course={}&name={}'.format(settings.PALOMA_HOST, context['type'], context['course'], context['name'])
             response = requests.get(url)
             if response.status_code != 200:
