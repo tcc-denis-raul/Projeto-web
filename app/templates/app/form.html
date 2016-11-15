@@ -6,9 +6,16 @@
 	<form action="" method='post'>
 		{% csrf_token %}
 		{{ form.as_p }}
-		<input class="button round index" style="width:100%;" type='submit' value='Enviar'>
+		{% if extra %}
+		{{ extra }}
+		{% endif %}
+		{% if button_name %}
+		<input class="button round index" style="width:100%;" type='submit' value='{{ button_name }}'>
+		{% else %}
+			<input class="button round index" style="width:100%;" type='submit' value='Enviar'>
+		{% endif %}
+		<a class="close-reveal-modal" id="revealclose" aria-label="Close">&#215;</a>
 	</form>
-	<a class="close-reveal-modal" id="revealclose" aria-label="Close">&#215;</a>
 </div>
 {% endblock %}
 

@@ -207,12 +207,13 @@ class SignUpView(View):
         user.save()
         return redirect('app:login')
 
-#TODO: add confirm dialog
 class LogOutView(View):
     def get(self, request, *args, **kwargs):
+        return render(request, 'app/form.html', {'title': "Desconectar?" ,'button_name': "Sim"})
+
+    def post(self, request, *args, **kwargs):
         logout(request)
         return redirect('app:index')
-
 
 class UpdatePasswordView(View):
     def get(self, request, *args, **kwargs):
