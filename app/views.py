@@ -278,6 +278,9 @@ class ProfileView(View):
 
 
 class UploadImageView(View):
+    def get(self, request, *args, **kwargs):
+        return render(request, 'app/form.html', {'photo': 'true'})
+
     def post(self, request, *args, **kwargs):
         data = {
            "username": "username",
