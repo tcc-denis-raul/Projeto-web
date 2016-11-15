@@ -32,7 +32,11 @@ class UserFormSignUp(forms.Form):
     Password = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Senha")
     Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirmar senha")
 
-
+class UserFormUpdate(forms.Form):
+    Email = forms.CharField(required=True, max_length=100, label="Email")
+    FirstName = forms.CharField(required=True, max_length=200, label="Primeiro nome")
+    LastName = forms.CharField(required=True, max_length=200, label="Último nome")
+ 
 class UpdatePasswordForm(forms.Form):
     NewPasswd = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Nova senha")
     Confirm = forms.CharField(required=True, max_length=32, widget=forms.PasswordInput, label="Confirmar senha")

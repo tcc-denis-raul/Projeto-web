@@ -233,6 +233,23 @@ class UpdatePasswordView(View):
         u.save()
         return redirect('app:index')
 
+class UpdateUserView(View):
+    def get(self, request, *args, **kwargs):
+        form = forms.UserFormUpdate()
+        return render(request, 'app/form.html', {'form': form, 'title': "Trocar informações"})
+
+    def post(self, request, *args, **kwargs):
+        email = request.POST['Email']
+        firstName = request.POST['FirstName']
+        lastName = request.POST['LastName']
+        username = request.user.username
+        user = User.objects.get(username=username)
+        user.email = email
+        user.last_name = lastName
+        user.first_name = firstName
+        user.save()
+        return redirect('app:profile')
+
 class IndicateCourseView(View):
     def get(self, request, *args, **kwargs):
         type = [('Language', 'Idiomas', )]
