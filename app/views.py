@@ -397,3 +397,43 @@ class CourseDetailView(View):
         formated_courses = self.fmt_table(detail, list_char)
         context["courses"] = formated_courses
         return JsonResponse(json.dumps({'context': context}), safe=False)
+
+
+class CoursesUserView(View):
+    def get(self, request, *args, **kwargs):
+        url = '{}/users/profile?username={}'.format(settings.PALOMA_HOST, request.user.username)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return {
+                'error_message': 'Algo aconteceu errado: status code: {}'
+                .format(response.status_code)
+            }
+        detail = response.json()
+        data = {
+            "type": 'language',
+            "course": 'ingles',
+            "based": detail['Based'],
+            "extra": detail['Extra'],
+            "price": detail['Price'],
+            "dynamic": detail['Dynamic'],
+            "platform": detail['Platform'],
+            "length": 5
+        }
+        filter = urllib.urlencode(data)
+        url = '{}/courses?{}'.format(settings.PALOMA_HOST, filter)
+        response = requests.get(url)
+        if response.status_code != 200:
+            return render(
+                request,
+                'app/courses.html',
+                {'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)}
+            )
+        context = {
+            'courses': response.json(),
+            "type": 'language',
+            "course": 'ingles',
+            'path': settings.LOGO_IMAGE_STATIC
+        }
+        return render(request, 'app/courses.html', {'context': context})
+
+

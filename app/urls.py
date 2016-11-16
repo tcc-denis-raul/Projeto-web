@@ -17,6 +17,7 @@ urlpatterns = [
     url(r'^user/profile/$', views.ProfileView.as_view(), name='profile'),
     url(r'^user/upload/image$', views.UploadImageView.as_view(), name='upload_image'),
     url(r'^user/update', views.UpdateUserView.as_view(), name='update_user'),
+    url(r'user/courses', views.CoursesUserView.as_view(), name='user_courses'),
     url(r'^courses/available$', views.AvailableCoursesView.as_view(), name='available_courses'),
     url(r'^course/detail/(?P<name>[\w\W\s+]+)/(?P<type>[\w+]+)/(?P<course>[\w+]+)$', views.CourseDetailView.as_view(), name='course_detail'),
 ]
