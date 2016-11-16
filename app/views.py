@@ -25,7 +25,7 @@ class SurveyView(TemplateView):
     template_name = 'app/survey.html'
 
     def fmt_list(self, value):
-        list = []
+        list = [('empty', '---------', )]
         for i in value:
             list.append((i.keys()[0], i.values()[0], ))
         return list

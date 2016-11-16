@@ -6,7 +6,7 @@
 	<div><span>Escolha aqui as opções para seu curso</span></div>
 	</br>
 	<form action="{% url 'app:result_survey' context.type 'ingles' context.save  %}" method='post'>
-    	{% csrf_token %}
+		{% csrf_token %}
 		{{ context.form.as_p }}
     	<input type='submit' value='Selecionar' class="button round index survey">
 	</form>
