@@ -320,7 +320,8 @@ class CourseDetailView(View):
             dolar = float(CacheSql().get("Dolar"))
             if ufmt["PriceReal"] != None:
                 for value in ufmt["PriceReal"]:
-                    result.append('R${},00'.format(value))
+                    price = str(float(value)).replace('.', ',')
+                    result.append('R${}'.format(price))
             if ufmt["PriceDolar"] != None:
                 for value in ufmt["PriceDolar"]:
                     price = 'R${}'.format(value*dolar).replace('.', ',') 
