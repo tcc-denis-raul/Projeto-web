@@ -317,14 +317,15 @@ class CourseDetailView(View):
     def fmt_list(self, ufmt, fmt, char):
         result = []
         if char == "Price":
-            dolar = CacheSql().get("Dolar")
+            dolar = float(CacheSql().get("Dolar"))
             if ufmt["PriceReal"] != None:
                 for value in ufmt["PriceReal"]:
                     result.append('R${},00'.format(value))
             if ufmt["PriceDolar"] != None:
                 for value in ufmt["PriceDolar"]:
-                    result.append('${},00'.format(value))
-                    result.append('t{}'.format(value*dolar))
+                    price = 'R${}'.format(value*dolar).replace('.', ',') 
+                    if price not in result:
+                        result.append(price)
         else:
             for value in ufmt[char]:
                 for dict in fmt[0][char]:
