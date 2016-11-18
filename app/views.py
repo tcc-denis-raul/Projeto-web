@@ -13,6 +13,7 @@ from django.core.files.storage import default_storage
 
 from app import settings, forms
 from cache import CacheSql
+from tasks import call_tasks
 # Create your views here.
 
 class IndexView(TemplateView):
@@ -73,8 +74,7 @@ class CoursesView(TemplateView):
             "course": course,
             'path': settings.LOGO_IMAGE_STATIC
         } 
-        CacheSql().call_tasks(context['courses'])
-        #  TaskCache(context['courses'])
+        call_tasks(context['courses'])
         return {'context': context}
 
 
@@ -116,8 +116,7 @@ class ResultSurveyView(View):
             "course": self.kwargs['course'],
             'path': settings.LOGO_IMAGE_STATIC
         }
-        CacheSql().call_tasks(context['courses'])
-        #  TaskCache(context['courses'])
+        call_tasks(context['courses'])
         return render(request, 'app/courses.html', {'context': context})
 
 
@@ -318,12 +317,14 @@ class CourseDetailView(View):
     def fmt_list(self, ufmt, fmt, char):
         result = []
         if char == "Price":
+            dolar = CacheSql().get("Dolar")
             if ufmt["PriceReal"] != None:
                 for value in ufmt["PriceReal"]:
                     result.append('R${},00'.format(value))
             if ufmt["PriceDolar"] != None:
                 for value in ufmt["PriceDolar"]:
                     result.append('${},00'.format(value))
+                    result.append('t{}'.format(value*dolar))
         else:
             for value in ufmt[char]:
                 for dict in fmt[0][char]:

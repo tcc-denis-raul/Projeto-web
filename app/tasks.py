@@ -4,6 +4,21 @@ from app import settings
 import logging
 import requests
 
+def call_tasks(courses):
+    TaskGetDolar()
+    TaskCache(courses)
+    TaskCleanCache(courses)
+
+@background(schedule=10)
+def TaskGetDolar():
+    response = requests.get("http://dolarhoje.com/cotacao.txt")
+    if response.status_code != 200:
+        logging.debug("Wrong in obtain dolar")
+        dolar = 3.4
+    else:
+        dolar = response.text.replace(',', '.')
+    CacheSql().save("Dolar", dolar)
+
 @background(schedule=60*60)
 def TaskCleanCache(courses):
     logging.debug("Clean cache: ")
@@ -13,7 +28,7 @@ def TaskCleanCache(courses):
     logging.debug("Clean questions: ")
     CacheSql().delete("Questions")
 
-@background(schedule=1)
+@background(schedule=10)
 def TaskCache(courses):
     logging.debug("saving courses: ")
     for course in courses:
