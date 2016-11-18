@@ -13,9 +13,7 @@ from django.core.files.storage import default_storage
 
 from app import settings, forms
 from cache import CacheSql
-from tasks import TaskCache
 # Create your views here.
-
 
 class IndexView(TemplateView):
     template_name = 'app/index.html'
@@ -75,7 +73,8 @@ class CoursesView(TemplateView):
             "course": course,
             'path': settings.LOGO_IMAGE_STATIC
         } 
-        TaskCache(context['courses'])
+        CacheSql().call_tasks(context['courses'])
+        #  TaskCache(context['courses'])
         return {'context': context}
 
 
@@ -117,7 +116,8 @@ class ResultSurveyView(View):
             "course": self.kwargs['course'],
             'path': settings.LOGO_IMAGE_STATIC
         }
-        TaskCache(context['courses'])
+        CacheSql().call_tasks(context['courses'])
+        #  TaskCache(context['courses'])
         return render(request, 'app/courses.html', {'context': context})
 
 

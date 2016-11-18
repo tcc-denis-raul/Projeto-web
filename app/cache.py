@@ -5,6 +5,11 @@ from app import settings
 from app.models import CacheModel
 
 class CacheSql():
+    def call_tasks(self, courses):
+        from tasks import TaskCache, TaskCleanCache
+        TaskCache(courses)
+        TaskCleanCache(courses)
+
     def save(self, key, value):
         try:
             if CacheModel.objects.filter(name=str(key)).exists():
