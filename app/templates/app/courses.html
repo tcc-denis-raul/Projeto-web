@@ -3,6 +3,7 @@
 {% load image %}
 
 {% block css %}
+	<link rel="stylesheet" type="text/css" href="{% static 'app/css/rating.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'app/slick/slick.css' %}" />
 	<link rel="stylesheet" type="text/css" href="{% static 'app/slick/slick-theme.css' %}" />
 {% endblock %}
@@ -34,11 +35,13 @@
 	<p class="lead" id="based"> </p>
 	<p class="lead" id="dynamic"> </p>
 	<p class="lead" id="extra"> </p>
-	<p id="url"> </p>	
+	<p id="url"> </p>
+	<p id="feed"> </p>
 </div>
 {% endblock %}
 
 {% block js %}
+<script type="text/javascript" src="{% static 'app/js/rating.js' %}"></script>
 <script type="text/javascript">
     function load_course_detail(name, type, course) {
     	$.ajax({
@@ -50,7 +53,7 @@
 				var data = $.parseJSON(jsdt.context.courses);
 				console.log(data);
 				$("#name").empty();$("#price").empty();$("#platform").empty();$("#based").empty();$("#dynamic").empty();
-				$("#extra").empty();$("#url").empty();
+				$("#extra").empty();$("#url").empty();$("#feed").empty();
 				$("#name").append('<b>' + data['name']['label'] + ': ' + '</b>' + data['name']['value']);
 				$("#price").append('<b>' + data['price']['label'] + ': ' + '</b>' + data['price']['value']);
 				$("#platform").append('<b>' + data['platform']['label'] + ': ' + '</b>' + data['platform']['value']);
@@ -58,6 +61,15 @@
 				$("#dynamic").append('<b>' + data['dynamic']['label'] + ': ' + '</b>' + data['dynamic']['value']);
 				$("#extra").append('<b>' + data['extra']['label'] + ': ' + '</b>' + data['extra']['value']);
 				$("#url").append('<b>' + data['url']['label'] + ': ' + '</b>' + '<a href="' + data['url']['value'] + '">' + data['url']['value'] + '</a>');
+				$("#feed").append('<b>' + data['rating']['label'] + ': ' + '</b>' + '<div class="rating"></div>');
+				$(".rating").rate({
+					max_value: 5,
+    				step_size: 0.5,
+    				initial_value: data["rating"]["value"],
+    				selected_symbol_type: 'utf8_star', // Must be a key from symbols
+    				cursor: 'default',
+    				readonly: true,
+				});
 				$("#course_detail").foundation("reveal", "open");
 			}
         });

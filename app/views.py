@@ -363,6 +363,10 @@ class CourseDetailView(View):
             "price": {
                 "label": "Preços",
                 "value": self.fmt_list(detail, char, "Price"),
+            },
+            "rating": {
+                "label": "Avaliações do usuário",
+                "value": detail['Rate']
             }
         }
         return json.dumps(result)
