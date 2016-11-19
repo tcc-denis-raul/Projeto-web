@@ -3,6 +3,7 @@ from cache import CacheSql
 from app import settings
 import logging
 import requests
+import urllib
 
 def call_tasks(courses):
     TaskGetDolar()
@@ -41,4 +42,21 @@ def TaskCache(courses):
         logging.debug("Failed get questions")
     questions = response.json()
     CacheSql().save("Questions", questions)
+
+
+@background(schedule=10)
+def TaskSendRate(name, rating):
+    data = {
+        "name": name,
+        "course": "ingles",
+        "type": "language",
+        "vote": str(rating)
+    }
+    data_qs = urllib.urlencode(data)
+    url = '{}/course/feedback?{}'.format(settings.PALOMA_HOST, data_qs)
+    response = requests.post(url)
+    if response.status_code != 200:
+        logging.debug("Failed to send feedback")
+    else:
+        logging.debug("Feedback ok")
 

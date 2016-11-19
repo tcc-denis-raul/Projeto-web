@@ -3,17 +3,18 @@ import json
 import requests
 import urllib
 import os
+import urlparse
 
 from django.views.generic import TemplateView, View
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
-from django.http import JsonResponse
+from django.http import JsonResponse, HttpResponse
 from django.shortcuts import render, redirect
 from django.core.files.storage import default_storage
 
 from app import settings, forms
 from cache import CacheSql
-from tasks import call_tasks
+from tasks import call_tasks, TaskSendRate
 # Create your views here.
 
 class IndexView(TemplateView):
@@ -366,7 +367,11 @@ class CourseDetailView(View):
             },
             "rating": {
                 "label": "Avaliações do usuário",
-                "value": detail['Rate']
+                "value": float(detail['Rate'])
+            },
+            "user_rating": {
+                "label": "Avaliar",
+                "value": 0.0
             }
         }
         return json.dumps(result)
@@ -442,5 +447,15 @@ class CoursesUserView(View):
             'path': settings.LOGO_IMAGE_STATIC
         }
         return render(request, 'app/courses.html', {'context': context})
+
+
+class FeedbackView(View):
+    def post(self, request, *args, **kwargs):
+        rating = urlparse.parse_qs(request.body)
+        old = float(rating.get('rating')[0])
+        new = float(rating.get('value')[0])
+        rate = (old + new) / 2.0
+        TaskSendRate(kwargs['name'], rate) 
+        return HttpResponse('')
 
 

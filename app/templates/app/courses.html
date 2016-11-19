@@ -37,6 +37,7 @@
 	<p class="lead" id="extra"> </p>
 	<p id="url"> </p>
 	<p id="feed"> </p>
+	<p id="user_feed"></p>
 </div>
 {% endblock %}
 
@@ -53,7 +54,7 @@
 				var data = $.parseJSON(jsdt.context.courses);
 				console.log(data);
 				$("#name").empty();$("#price").empty();$("#platform").empty();$("#based").empty();$("#dynamic").empty();
-				$("#extra").empty();$("#url").empty();$("#feed").empty();
+				$("#extra").empty();$("#url").empty();$("#feed").empty();$("#user_feed").empty();
 				$("#name").append('<b>' + data['name']['label'] + ': ' + '</b>' + data['name']['value']);
 				$("#price").append('<b>' + data['price']['label'] + ': ' + '</b>' + data['price']['value']);
 				$("#platform").append('<b>' + data['platform']['label'] + ': ' + '</b>' + data['platform']['value']);
@@ -69,6 +70,21 @@
     				selected_symbol_type: 'utf8_star', // Must be a key from symbols
     				cursor: 'default',
     				readonly: true,
+				});
+				$("#user_feed").append('<b>' + data['user_rating']['label'] + ': ' + '</b>' + '<div class="user_rating"></div>');
+				$(".user_rating").rate({
+					max_value: 5,
+    				step_size: 0.5,
+    				selected_symbol_type: 'utf8_star', // Must be a key from symbols
+    				cursor: 'default',
+    				readonly: false,
+    				change_once: true,
+    				ajax_method: 'POST',
+    				url: '/course/feedback/'+data['name']['value'],
+    				additional_data: {
+						csrfmiddlewaretoken: '{{ csrf_token }}',
+						rating: data['rating']['value']
+    				},
 				});
 				$("#course_detail").foundation("reveal", "open");
 			}
