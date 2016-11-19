@@ -88,6 +88,8 @@
 							rating: data['rating']['value']
 						},
 					});
+				} else {
+					$("#user_feed").append('<b>' + data['user_rating']['label'] + ': ' + '</b>' + '<p><a href="{% url 'app:signup' %}"> Cadastre-se </a></p>');
 				}
 				$("#course_detail").foundation("reveal", "open");
 			}
