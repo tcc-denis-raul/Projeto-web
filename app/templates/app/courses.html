@@ -71,21 +71,24 @@
     				cursor: 'default',
     				readonly: true,
 				});
-				$("#user_feed").append('<b>' + data['user_rating']['label'] + ': ' + '</b>' + '<div class="user_rating"></div>');
-				$(".user_rating").rate({
-					max_value: 5,
-    				step_size: 0.5,
-    				selected_symbol_type: 'utf8_star', // Must be a key from symbols
-    				cursor: 'default',
-    				readonly: false,
-    				change_once: true,
-    				ajax_method: 'POST',
-    				url: '/course/feedback/'+data['name']['value'],
-    				additional_data: {
-						csrfmiddlewaretoken: '{{ csrf_token }}',
-						rating: data['rating']['value']
-    				},
-				});
+				if (data['auth']['value']){
+					console.log(data['auth']['value']);
+					$("#user_feed").append('<b>' + data['user_rating']['label'] + ': ' + '</b>' + '<div class="user_rating"></div>');
+					$(".user_rating").rate({
+						max_value: 5,
+						step_size: 0.5,
+						selected_symbol_type: 'utf8_star', // Must be a key from symbols
+						cursor: 'default',
+						readonly: false,
+						change_once: true,
+						ajax_method: 'POST',
+						url: '/course/feedback/'+data['name']['value'],
+						additional_data: {
+							csrfmiddlewaretoken: '{{ csrf_token }}',
+							rating: data['rating']['value']
+						},
+					});
+				}
 				$("#course_detail").foundation("reveal", "open");
 			}
         });

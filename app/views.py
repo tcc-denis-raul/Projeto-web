@@ -335,7 +335,7 @@ class CourseDetailView(View):
                         result.append(dict.get(value))
         return result
 
-    def fmt_table(self, detail, char):
+    def fmt_table(self, detail, char, is_auth):
         result = {
             "name": {
                 "label": "Name",
@@ -372,6 +372,10 @@ class CourseDetailView(View):
             "user_rating": {
                 "label": "Avaliar",
                 "value": 0.0
+            },
+            "auth": {
+                "label": "Autenticado",
+                "value": is_auth
             }
         }
         return json.dumps(result)
@@ -406,7 +410,8 @@ class CourseDetailView(View):
                     .format(response.status_code)
                 }
             list_char = response.json()
-        formated_courses = self.fmt_table(detail, list_char)
+        authenticated = request.user.is_active
+        formated_courses = self.fmt_table(detail, list_char, authenticated)
         context["courses"] = formated_courses
         return JsonResponse(json.dumps({'context': context}), safe=False)
 
