@@ -421,7 +421,7 @@ class CoursesUserView(View):
         url = '{}/users/profile?username={}'.format(settings.PALOMA_HOST, request.user.username)
         response = requests.get(url)
         if response.status_code != 200:
-            return redirect('app:survey', args=('language', 'true'))
+            return redirect('app:survey', type='language', save='true')
         detail = response.json()
         data = {
             "type": 'language',
