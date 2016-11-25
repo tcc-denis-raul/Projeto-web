@@ -8,7 +8,7 @@ import urllib
 def call_tasks(courses):
     TaskGetDolar()
     TaskCache(courses)
-    TaskCleanCache(courses)
+    #  TaskCleanCache(courses)
 
 @background(schedule=10)
 def TaskGetDolar():
