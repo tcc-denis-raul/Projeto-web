@@ -457,10 +457,8 @@ class CoursesUserView(View):
 class FeedbackView(View):
     def post(self, request, *args, **kwargs):
         rating = urlparse.parse_qs(request.body)
-        old = float(rating.get('rating')[0])
-        new = float(rating.get('value')[0])
-        rate = (old + new) / 2.0
-        TaskSendRate(kwargs['name'], rate) 
+        rate = float(rating.get('value')[0])
+        TaskSendRate(kwargs['name'], rate)
         return HttpResponse('')
 
 
