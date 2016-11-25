@@ -1,7 +1,12 @@
 {% extends 'app/base.html' %}
 
-{% block content %}
-<div>
-	<h1>Error {{ status }}</h1>
-</div>
+{% block menu_content %}
+<section class="caption">
+	<div class="row">
+	    <h1 class="mean_cap">Oops, Algo de errado aconteceu!!!</h1>
+		<h4 class="sub_cap" style="color:white;margin-bottom:50px;">Código do erro: {{ status }}</h4>
+
+		<a href="{% url 'app:index' %}" class="button round index"><span>Home</span></a>
+	</div>
+</section>
 {% endblock%}
