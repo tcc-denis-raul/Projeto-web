@@ -17,20 +17,21 @@ from cache import CacheSql
 from tasks import call_tasks, TaskSendRate
 # Create your views here.
 
+class ErrorView(TemplateView):
+    template_name = 'app/404.html'
+
+
 class IndexView(TemplateView):
     template_name = 'app/index.html'
 
-
-class SurveyView(TemplateView):
-    template_name = 'app/survey.html'
-
+class SurveyView(View):
     def fmt_list(self, value):
         list = [("", '---------', )]
         for i in value:
             list.append((i.keys()[0], i.values()[0], ))
         return list
 
-    def get_context_data(self, **kwargs):
+    def get(self, request, *args, **kwargs):
         context = {
             'type': self.kwargs['type'],
             'save': self.kwargs['save'],
@@ -38,12 +39,7 @@ class SurveyView(TemplateView):
         url = '{}/courses/questions?type={}'.format(settings.PALOMA_HOST, context['type'])
         response = requests.get(url)
         if response.status_code != 200:
-            # TODO: Tratar todos os erros possiveis: 
-            # ex.: 404 gerar pagina de 404 ...
-            return {
-                'error_message': 'Algo aconteceu errado: status code: {}'
-                .format(response.status_code)
-            }
+            return redirect('app:error', status=response.status_code)
         context['form'] = forms.SurveyForm(
             self.fmt_list(response.json()[0]['Price']),
             self.fmt_list(response.json()[0]['Based']),
@@ -51,32 +47,25 @@ class SurveyView(TemplateView):
             self.fmt_list(response.json()[0]['Dynamic']),
             self.fmt_list(response.json()[0]['Extra'])
         )
-        return {'context': context}
+        return render(request, 'app/survey.html', {'context': context})
 
-
-class CoursesView(TemplateView):
-    template_name = 'app/courses.html'
-
-    def get_context_data(self, **kwargs):
+class CoursesView(View):
+    def get(self, request, *args, **kwargs):
         typ = self.kwargs['type']
         course = self.kwargs['course']
         url = '{}/courses?type={}&course={}'.format(settings.PALOMA_HOST, typ, course)
 
         response = requests.get(url)
         if response.status_code != 200:
-            #TODO: Tratar todos os erros possiveis
-            return {
-                'error_message': 'Algo aconteceu errado: status code: {}'
-                .format(response.status_code)
-            }
+            return redirect('app:error', status=response.status_code)
         context = {
             "courses": response.json(),
             "type": typ,
             "course": course,
             'path': settings.LOGO_IMAGE_STATIC
-        } 
+        }
         call_tasks(context['courses'])
-        return {'context': context}
+        return render(request, 'app/courses.html', {'context': context})
 
 
 class ResultSurveyView(View):
@@ -97,20 +86,12 @@ class ResultSurveyView(View):
             url = '{}/users/profile?{}'.format(settings.PALOMA_HOST, data_qs)
             response = requests.post(url, data_qs)
             if response.status_code != 200:
-                return render(
-                    request,
-                    'app/courses.html',
-                    {'error_message': 'Algo aconteceu errado: status code'}
-                )
+                return redirect('app:error', status=response.status_code)
         filter = urllib.urlencode(data)
         url = '{}/courses?{}'.format(settings.PALOMA_HOST, filter)
         response = requests.get(url)
         if response.status_code != 200:
-            return render(
-                request,
-                'app/courses.html',
-                {'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)}
-            )
+            return redirect('app:error', status=response.status_code)
         context = {
             'courses': response.json(),
             "type": self.kwargs['type'],
@@ -127,30 +108,23 @@ class TypesCoursesView(View):
         url = '{}/types/courses'.format(settings.PALOMA_HOST)
         response = requests.get(url)
         if response.status_code != 200:
-            return {
-                'error_message': 'Algo aconteceu errado: status code: {}'
-                .format(response.status_code)
-            }
+            return redirect('app:error', status=response.status_code)
         return JsonResponse(json.dumps(response.json()), safe=False)
 
 
-class AvailableCoursesView(TemplateView):
-    template_name = "app/available_courses.html"
-
-    def get_context_data(self, **kwargs):
+class AvailableCoursesView(View):
+    def get(self, request, *args, **kwargs):
         url = '{}/types/courses'.format(settings.PALOMA_HOST)
         response = requests.get(url)
         if response.status_code != 200:
-            return {
-                'error_message': 'Algo aconteceu errado: status code: {}'
-                .format(response.status_code)
-            }
+            return redirect('app:error', status=response.status_code)
         context = {
             "types": response.json(),
             "path": settings.TYPES_IMAGE_STATIC,
             "photo_default": '{}default'.format(settings.TYPES_IMAGE_STATIC)
         }
-        return {'context': context}
+        return render(request, 'app/available_courses.html', {'context': context})
+
 
 class LoginView(View):
     def get(self, request, *args, **kwargs):
@@ -268,11 +242,7 @@ class IndicateCourseView(View):
         url_req = "{}/indicate/course?{}".format(settings.PALOMA_HOST, data_qr) 
         response = requests.post(url_req)
         if response.status_code != 200:
-            return render(
-                request,
-                "app/index.html",
-                {'alert_error': 'Curso já cadastrado ou indicado'}
-            )
+            return redirect('app:index')
         return redirect('app:index')
 
 class ProfileView(View):
@@ -393,10 +363,7 @@ class CourseDetailView(View):
             url = '{}/course/detail?type={}&course={}&name={}'.format(settings.PALOMA_HOST, context['type'], context['course'], context['name'])
             response = requests.get(url)
             if response.status_code != 200:
-                return {
-                    'error_message': 'Algo aconteceu errado: status code: {}'
-                    .format(response.status_code)
-                }
+                return redirect('app:error', status=response.status_code)
             detail = response.json()
         list_char = []
         try:
@@ -437,11 +404,7 @@ class CoursesUserView(View):
         url = '{}/courses?{}'.format(settings.PALOMA_HOST, filter)
         response = requests.get(url)
         if response.status_code != 200:
-            return render(
-                request,
-                'app/courses.html',
-                {'error_message': 'Algo aconteceu errado: status code: {}'.format(response.status_code)}
-            )
+            return redirect('app:error', status=response.status_code)
         context = {
             'courses': response.json(),
             "type": 'language',
