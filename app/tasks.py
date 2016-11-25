@@ -43,6 +43,19 @@ def TaskCache(courses):
     questions = response.json()
     CacheSql().save("Questions", questions)
 
+def TaskUpdateCourse(name):
+    context = {
+        "name": name,
+        "type": 'language',
+        "course": 'ingles',
+    }
+    url = '{}/course/detail?type={}&course={}&name={}'.format(settings.PALOMA_HOST, context['type'], context['course'], context['name'])
+    response = requests.get(url)
+    if response.status_code != 200:
+        logging.debug("failed: status: %s " % response.status_code)
+        return
+    course = response.json()
+    CacheSql().save(course.get("Name"), course)
 
 @background(schedule=10)
 def TaskSendRate(name, rating):
@@ -59,4 +72,5 @@ def TaskSendRate(name, rating):
         logging.debug("Failed to send feedback")
     else:
         logging.debug("Feedback ok")
+        TaskUpdateCourse(name)
 
