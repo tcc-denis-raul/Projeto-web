@@ -1,8 +1,13 @@
 # -*- coding: utf-8 -*-
 import httpretty
 import requests
+import urllib
 from django.test import TestCase
 from django.core.urlresolvers import reverse
+
+COURSES = '[{"ID":"5838544d7c298c4be7274a8d","Name":"Duolingo","Based":["exemplo","exercicio_interativo"],"PriceReal":[0],"PriceDolar":[0],"Dynamic":["curso_livre"],"Platform":["android_online","ios_online"],"Url":"https://www.duolingo.com/pt","Extra":["comunicacao_alunos"],"Description":"preecher","Rate":0.75,"Count":4}]'
+
+
 
 class TestErrorView(TestCase):
 
@@ -53,3 +58,128 @@ class TestSurveyView(TestCase):
         response = self.client.get(reverse('app:survey', kwargs={'type': 'language', 'save': 'false'}))
         self.assertEqual(response.status_code, 302)
         self.assertTemplateNotUsed(response, 'app/survey.html')
+
+
+class TestCoursesView(TestCase):
+
+    @httpretty.activate
+    def test_courses_view_status_ok(self):
+        httpretty.register_uri(
+            httpretty.GET,
+            "http://localhost:5000/courses?type=language&course=ingles",
+            body=COURSES,
+            content_type="application/json"
+        )
+        response = self.client.get(reverse('app:courses', kwargs={'type': 'language', 'course': 'ingles'}))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'app/courses.html')
+        self.assertContains(response, 'Duolingo')
+
+    @httpretty.activate
+    def test_courses_views_status_not_found(self):
+        httpretty.register_uri(
+            httpretty.GET,
+            "http://localhost:5000/courses?type=language&course=ingles",
+            status=500
+        )
+        response = self.client.get(reverse('app:courses', kwargs={'type': 'language', 'course': 'ingles'}))
+        self.assertEqual(response.status_code, 302)
+        self.assertTemplateNotUsed(response, 'app/courses.html')
+
+
+class TestResultView(TestCase):
+    def mock_courses(self, status):
+        httpretty.register_uri(
+            httpretty.GET,
+            "http://localhost:5000/courses?type=language&course=ingles",
+            body=COURSES,
+            status=status
+        )
+
+    def mock_profile(self, status):
+        data = {
+            "type": 'language',
+            "course": 'ingles',
+            "based": 'based',
+            "extra": 'extra',
+            "price": 'price',
+            "dynamic": 'dynamic',
+            "platform": 'platform',
+            "length": 5,
+            "username": 'username'
+        }
+        httpretty.register_uri(
+            httpretty.POST,
+            "http://localhost:5000/users/profile?{}".format(urllib.urlencode(data)),
+            status=status
+        )
+
+    @httpretty.activate
+    def test_result_view_with_courses(self):
+        self.mock_courses(200)
+        response = self.client.post(
+            reverse(
+                'app:result_survey',
+                kwargs={
+                    'type': 'language',
+                    'course': 'ingles',
+                    'save': "false"
+                }
+            ),
+            {'Based': 'based', 'Extra': 'extra', 'Price': 'price', 'Dynamic': 'dynamic', 'Platform': 'platform'}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'app/courses.html')
+        self.assertContains(response, 'Duolingo')
+
+    @httpretty.activate
+    def test_result_view_saving_profile(self):
+        self.mock_courses(200)
+        self.mock_profile(200)
+        response = self.client.post(
+            reverse(
+                'app:result_survey',
+                kwargs={
+                    'type': 'language',
+                    'course': 'ingles',
+                    'save': "true"
+                }
+            ),
+            {'Based': 'based', 'Extra': 'extra', 'Price': 'price', 'Dynamic': 'dynamic', 'Platform': 'platform', 'username': 'username'}
+        )
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'app/courses.html')
+
+    @httpretty.activate
+    def test_result_view_saving_profile_with_status_not_found(self):
+        self.mock_courses(200)
+        self.mock_profile(400)
+        response = self.client.post(
+            reverse(
+                'app:result_survey',
+                kwargs={
+                    'type': 'language',
+                    'course': 'ingles',
+                    'save': "true"
+                }
+            ),
+            {'Based': 'based', 'Extra': 'extra', 'Price': 'price', 'Dynamic': 'dynamic', 'Platform': 'platform', 'username': 'username'}
+        )
+        self.assertEqual(response.status_code, 302)
+
+    @httpretty.activate
+    def test_result_view_with_status_not_found(self):
+        self.mock_courses(500)
+        response = self.client.post(
+            reverse(
+                'app:result_survey',
+                kwargs={
+                    'type': 'language',
+                    'course': 'ingles',
+                    'save': "false"
+                }
+            ),
+            {'Based': 'based', 'Extra': 'extra', 'Price': 'price', 'Dynamic': 'dynamic', 'Platform': 'platform'}
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertTemplateNotUsed(response, 'app/courses.html')
