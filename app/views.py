@@ -139,20 +139,9 @@ class LoginView(View):
             if user.is_active:
                 login(request, user)
             else:
-                return render(
-                    request,
-                    'app/form.html',
-                    {
-                        'form': UserFormLogin(),
-                        'alert_error': "Conta desabilitada. Entre em contato com o Administrador"
-                    }
-                )
+                return redirect('app:login')
         else:
-            return render(
-                request,
-                'app/form.html',
-                {'form': forms.UserFormLogin(), 'alert_error': "Usuário ou senha incorretos"}
-            )
+            return redirect('app:login')
         return redirect('app:index')
 
 class SignUpView(View):
@@ -168,11 +157,7 @@ class SignUpView(View):
         password = request.POST['Password']
         confirm = request.POST['Confirm']
         if confirm != password:
-            return render(
-                request,
-                "app/form.html",
-                {'alert_error': 'Senhas não coicidem', 'form': UserFormSignUp()}
-            )
+            return redirect('app:signup')
         user = User.objects.create_user(userName, email, password)
         user.first_name = firstName
         user.last_name = lastName
@@ -197,11 +182,7 @@ class UpdatePasswordView(View):
         newPasswd = request.POST['NewPasswd']
         confirm = request.POST['Confirm']
         if confirm != newPasswd:
-            return render(
-                request,
-                "app/form.html",
-                {'alert_error': 'Senhas não coicidem', 'form': UpdatePasswordForm()}
-            )
+            return redirect('app:update_password')
         u = User.objects.get(username=username)
         u.set_password(newPasswd)
         u.save()
