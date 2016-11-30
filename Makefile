@@ -7,6 +7,10 @@ clean: clean_image
 deps:
 	@pip install -r requirements.txt
 
+test: deps
+	@coverage run manage.py test
+	@coverage report --omit="*/tests/*,manage.py,django_api/settings.py" --include="./*" -m
+
 task:
 	@DEBUG=true ./manage.py process_tasks &
 run: clean deps task
