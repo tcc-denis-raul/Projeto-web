@@ -851,6 +851,36 @@ button.index:focus,
 
 /*    Fim Novas Alterações Desktop    */
 
+.about {
+    /* background: -webkit-linear-gradient(left, rgba(32,82,162,1) 0%,rgba(32,82,162,0.5) 50%,rgba(129,179,233,0.03) 97%,rgba(129,179,233,0) 100%); [> Chrome10-25,Safari5.1-6 <] */
+	border-style: solid;
+	border-color: white;
+	border-width: thin;
+	margin-left: 10%;
+	margin-right: 10%;
+	background-color: rgba(129,179,233,0.09);
+	height: 70%;
+	color: white;
+}
+
+.about h1 {
+	margin-left: 1%;
+	color: #B4B2B2;
+}
+
+.about p, ul {
+	margin-left: 5%;
+	color: #DFDADA;
+}
+
+.about p img{
+	-moz-border-radius: 2000px;
+    -webkit-border-radius: 1000px;
+    -o-border-radius: 10px;
+    width:  150px;
+    height: auto;
+	margin-right: 5%
+}
 
 /*    Responsive CSS    */
 
@@ -931,7 +961,38 @@ button.index:focus,
     .survey form div div {
         margin-left: auto;
     }
+
+	.about {
+    /* background: -webkit-linear-gradient(left, rgba(32,82,162,1) 0%,rgba(32,82,162,0.5) 50%,rgba(129,179,233,0.03) 97%,rgba(129,179,233,0) 100%); [> Chrome10-25,Safari5.1-6 <] */
+	border-style: solid;
+	border-color: white;
+	border-width: thin;
+	margin-left: 10%;
+	margin-right: 10%;
+	background-color: rgba(129,179,233,0.09);
+	height: 100%;
+	color: white;
 }
+
+	.about h1 {
+		margin-left: 1%;
+		color: #B4B2B2;
+	}
+
+	.about p, ul {
+		margin-left: 5%;
+		color: #DFDADA;
+	}
+
+	.about p img{
+		-moz-border-radius: 2000px;
+    	-webkit-border-radius: 1000px;
+    	-o-border-radius: 10px;
+    width:  150px;
+    height: auto;
+	margin-right: 5%
+}
+
 
 @media only screen and (min-width: 64.063em) {
     .orbit-container .orbit-slide-number {
@@ -961,6 +1022,4 @@ button.index:focus,
         margin-left: auto;
     }
 }
-
-
 /*   End-Responsive CSS    */
