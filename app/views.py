@@ -289,7 +289,7 @@ class CourseDetailView(View):
     def fmt_table(self, detail, char, is_auth):
         result = {
             "name": {
-                "label": "Name",
+                "label": "Nome",
                 "value": detail["Name"],
             },
             "url": {
