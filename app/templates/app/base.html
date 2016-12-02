@@ -26,14 +26,17 @@
                         <ul class="title-area">
                             <li class="name">
                                 <a href="{% url 'app:index' %}" class="logo">
-                                    <h1>paloma<span class="tld"> .com</span></h1>
-                                </a>
-                            </li>
+                                   <h1>paloma<span class="tld"> .com</span></h1>
+							   </a>
+							</li>
                             <span class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></span>
                         </ul>
 
                         <section class="top-bar-section" id="mean_nav">
-                            <ul class="right">
+							<ul class="right">
+								<li>
+									<a href="{% url 'app:about' %}"> Sobre </a>
+								</li>
                                 <li class="has-dropdown">
                                     <a href="#">Cursos</a>
                                     <ul class="dropdown" id='dropdown'>

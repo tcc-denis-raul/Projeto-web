@@ -17,6 +17,11 @@ from cache import CacheSql
 from tasks import call_tasks, TaskSendRate
 # Create your views here.
 
+
+class AboutView(TemplateView):
+    template_name = 'app/about.html'
+
+
 class ErrorView(TemplateView):
     template_name = 'app/404.html'
 
@@ -401,5 +406,4 @@ class FeedbackView(View):
         rate = float(rating.get('value')[0])
         TaskSendRate(kwargs['name'], rate)
         return HttpResponse('')
-
 

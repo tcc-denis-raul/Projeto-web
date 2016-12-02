@@ -22,4 +22,5 @@ urlpatterns = [
     url(r'^course/detail/(?P<name>[\w\W\s+]+)/(?P<type>[\w+]+)/(?P<course>[\w+]+)$', views.CourseDetailView.as_view(), name='course_detail'),
     url(r'^course/feedback/(?P<name>[\w\W\s+]+)$', views.FeedbackView.as_view(), name='course_feedback'),
     url(r'^error/(?P<status>[\w]+)$', views.ErrorView.as_view(), name='error'),
+    url(r'^about$', views.AboutView.as_view(), name='about'),
 ]
