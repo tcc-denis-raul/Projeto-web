@@ -12,7 +12,7 @@
 <section class="responsive slider">
 	{% for course in context.courses %}
 	<div class="courses">
-		<p onmouseover='return load_course_detail("{{ course.Name }}", "{{ context.type }}", "{{ context.course }}");'>
+		<p onclick='return load_course_detail("{{ course.Name }}", "{{ context.type }}", "{{ context.course }}");'>
 			{% with context.path|add:course.Name as link %}
 			{% if link|exist_path %}
 				<img src="{% static  link %}">
