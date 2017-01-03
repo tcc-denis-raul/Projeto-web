@@ -28,8 +28,8 @@
                                 <a href="{% url 'app:index' %}" class="logo">
                                    <h1>paloma<span class="tld"> .com</span></h1>
 							   </a>
-							</li>
-                            <span class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></span>
+                           </li>
+                           <li class="toggle-topbar menu-icon"><a href="#"><span>Menu</span></a></li>
                         </ul>
 
                         <section class="top-bar-section" id="mean_nav">
@@ -81,14 +81,14 @@
         {% endblock %}
 
         <!--    Javascript Files    -->
-        <script type="text/javascript" src="{% static 'app/js/main.js' %}"></script>
 		<script type="text/javascript" src="{% static 'app/js/jquery.js' %}"></script>
-		<script type="text/javascript" src="{% static 'app/js/foundation.min.js' %}"></script>
+        <script type="text/javascript" src="{% static 'app/js/foundation.min.js' %}"></script>
         <script type="text/javascript" src="{% static 'app/slick/slick.js'%}">
+        <script type="text/javascript" src="{% static 'app/js/main.js' %}"></script>
 		<script>
 			$(document).foundation();
 		</script>
-		<script type="text/javascript">
+        <script type="text/javascript">
             $(document).ready(function(){
                 $.ajax({
                     url: '/types/courses/',
