@@ -1,0 +1,4 @@
+language: python
+cache: pip
+install: make deps
+script: make test

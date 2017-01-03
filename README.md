@@ -1,3 +1,4 @@
+[![Build Status](https://travis-ci.org/tcc-denis-raul/Projeto-web.svg?branch=master)](https://travis-ci.org/tcc-denis-raul/Projeto-web)
 TCC - P.A.L.O.M.A.
 ===================
 
